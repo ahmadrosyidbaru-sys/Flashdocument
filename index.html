@@ -6,277 +6,794 @@
     <title>Nouwr's Handmade | Buket Estetik</title>
     
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
+        /* --- DESIGN SYSTEM: Luxury Blue & Gold (Dark Theme) --- */
         :root {
-            --biru-utama: #3a6073; 
-            --biru-muda: #bed7dc;  
-            --bg-halus: #f8fbfe;      
-            --teks-gelap: #2c3e50;
-            --putih: #ffffff;
+            /* Palette Biru Malam & Emas Premium */
+            --bg-utama: #061022;       /* Biru gelap malam untuk latar belakang utama */
+            --bg-kartu: #0F1E36;       /* Midnight blue untuk kartu & kotak form (mengganti putih) */
+            --biru-sorot: #1A2E4C;     /* Biru navy sedang untuk input dan hover */
+            
+            --emas-utama: #D4AF37;     /* Emas metalik premium untuk aksen, tombol & bintang */
+            --emas-medium: #C59B27;    /* Emas sedang untuk hover interaktif */
+            --emas-pucat: #F3E5AB;     /* Emas sangat muda (soft cream) untuk teks kontras tinggi */
+            
+            --teks-terang: #E2E8F0;    /* Putih abu-abu lembut agar nyaman dibaca di latar gelap */
+            --teks-pudar: #94A3B8;     /* Abu-abu pudar untuk sub-detail */
+            
+            /* Shadows & Radius (Modern & Soft) */
+            --shadow-gold: 0 10px 30px rgba(212, 175, 55, 0.08);
+            --shadow-sm: 0 4px 15px rgba(0, 0, 0, 0.5);
+            --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.7);
+            --radius-md: 12px;
+            --radius-xl: 20px;
+            --radius-bulat: 50px;
+            
+            /* Transitions */
+            --trans-cepat: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --trans-halus: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        /* Smooth scrolling saat klik menu */
+        html { scroll-behavior: smooth; scroll-padding-top: 80px; height: 100%; }
+        
         body { 
-            background-color: var(--bg-halus); 
-            color: var(--teks-gelap); 
-            font-family: 'Montserrat', sans-serif; 
+            background-color: var(--bg-utama); 
+            color: var(--teks-terang); 
+            font-family: 'Poppins', sans-serif;
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
+            min-height: 100%;
+            overflow-x: hidden;
         }
 
-        h1, h2, h3, .logo { font-family: 'Playfair Display', serif; }
+        h1, h2, h3, .serif-font { 
+            font-family: 'Playfair Display', serif; 
+            color: var(--emas-pucat);
+        }
 
-        /* --- Navigasi --- */
+        /* --- BACKGROUND ANIMATION (GOLD DUST & GLOW) --- */
+        .ambient-glow {
+            position: fixed;
+            top: -20%;
+            left: -20%;
+            width: 70vw;
+            height: 70vw;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.04) 0%, transparent 70%);
+            z-index: -2;
+            pointer-events: none;
+            animation: pulseGlow 12s infinite alternate ease-in-out;
+        }
+        .ambient-glow-2 {
+            position: fixed;
+            bottom: -20%;
+            right: -20%;
+            width: 70vw;
+            height: 70vw;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.04) 0%, transparent 70%);
+            z-index: -2;
+            pointer-events: none;
+            animation: pulseGlow 16s infinite alternate-reverse ease-in-out;
+        }
+        @keyframes pulseGlow {
+            0% { transform: scale(1) translate(0, 0); }
+            100% { transform: scale(1.2) translate(80px, -50px); }
+        }
+
+        /* Container Partikel Emas Melayang */
+        .bg-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+        .particle {
+            position: absolute;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.8) 0%, rgba(212, 175, 55, 0) 70%);
+            border-radius: 50%;
+            opacity: 0;
+            animation: floatGold 22s infinite linear;
+        }
+        @keyframes floatGold {
+            0% { transform: translateY(110vh) translateX(0) scale(0.8); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-10vh) translateX(100px) scale(0.3); opacity: 0; }
+        }
+
+        /* --- NAVIGASI BAR (Dibuat Transparan Penuh & Overlay di Atas Hero) --- */
         nav {
             display: flex; justify-content: space-between; align-items: center; 
-            padding: 15px 5%;
-            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
-            position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid var(--biru-muda);
+            padding: 0 5%;
+            height: 75px;
+            background: transparent; /* Diubah menjadi transparan penuh */
+            backdrop-filter: none; /* Menghapus efek blur agar benar-benar bersih melayang */
+            position: absolute; top: 0; left: 0; width: 100%; z-index: 1000; 
+            box-shadow: none; /* Menghapus bayangan kotak */
+            transition: var(--trans-halus);
+            border-bottom: none; /* Menghapus garis pemisah agar menyatu dengan slideshow */
         }
-        .logo { font-size: 1.5rem; color: var(--biru-utama); font-style: italic; text-decoration: none; }
-        .nav-social { text-decoration: none; color: var(--biru-utama); display: flex; align-items: center; gap: 6px; }
-        .nav-social span { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
-        .nav-social i { font-size: 1.2rem; }
+        .logo { 
+            font-family: 'Playfair Display', serif; font-size: 1.6rem; 
+            font-style: italic; font-weight: 700; text-decoration: none; 
+            color: var(--emas-utama); 
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); /* Shadow tipis agar kontras di atas foto */
+        }
+        
+        /* Menu Links (Desktop) */
+        .nav-menu {
+            display: flex; list-style: none; gap: 30px;
+        }
+        .nav-menu li a {
+            text-decoration: none; color: var(--teks-terang);
+            font-weight: 500; font-size: 0.95rem;
+            position: relative; padding-bottom: 5px;
+            transition: var(--trans-cepat);
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+        }
+        .nav-menu li a::after {
+            content: ''; position: absolute; left: 0; bottom: 0;
+            width: 0; height: 2px; background: var(--emas-utama);
+            transition: var(--trans-halus); border-radius: 2px;
+        }
+        .nav-menu li a:hover { color: var(--emas-utama); }
+        .nav-menu li a:hover::after { width: 100%; }
 
-        /* --- Hero Slider --- */
+        /* Hamburger Menu Toggle Button (Mobile) */
+        .hamburger {
+            display: none; cursor: pointer; color: var(--emas-utama); font-size: 1.3rem;
+            width: 42px; height: 42px; border-radius: 50%;
+            background: rgba(6, 16, 34, 0.4); /* Background semi-transparan tipis agar tombol tetap terlihat jelas */
+            backdrop-filter: blur(5px);
+            align-items: center; justify-content: center;
+            transition: var(--trans-cepat); border: 1px solid rgba(212, 175, 55, 0.25);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .hamburger:active {
+            transform: scale(0.9);
+            background: rgba(212, 175, 55, 0.2);
+        }
+
+        /* --- HERO SECTION (TRUE FULL SCREEN OVERLAY) --- */
         .hero {
-            position: relative; height: 60vh; width: 100%; overflow: hidden;
-            display: flex; justify-content: center; align-items: center; color: white; text-align: center;
+            position: relative; 
+            height: 100vh; /* Diubah agar mengambil 100% tinggi layar penuh */
+            height: 100dvh; /* Menggunakan DVH dinamis untuk mobile */
+            width: 100%; 
+            overflow: hidden;
+            display: flex; justify-content: center; align-items: center; text-align: center;
+            background: var(--bg-utama);
         }
         .slider-wrapper {
-            position: absolute; top: 0; left: 0; width: 500%; height: 100%; display: flex; z-index: -2;
-            animation: slide-animation 20s infinite ease-in-out;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;
         }
         .slide { 
-            width: 100%; height: 100%; 
-            background-size: cover; 
-            background-position: center; 
-            background-repeat: no-repeat;
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%; background-size: cover; background-position: center; 
+            opacity: 0;
+            animation: fade-animation 15s infinite linear; 
         }
-        .hero::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.35); z-index: -1; }
         
-        .hero-content h1 { font-size: 2.5rem; line-height: 1.1; margin-bottom: 8px; }
-        .hero-content p { font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase; font-weight: 300; }
-
-        @keyframes slide-animation {
-            0%, 16% { transform: translateX(0%); }
-            20%, 36% { transform: translateX(-20%); }
-            40%, 56% { transform: translateX(-40%); }
-            60%, 76% { transform: translateX(-60%); }
-            80%, 96% { transform: translateX(-80%); }
-            100% { transform: translateX(0%); }
-        }
-
-        /* --- Kartu Informasi --- */
-        .info-section { 
-            display: grid; grid-template-columns: 1fr; gap: 15px; 
-            padding: 0 5% 40px; margin-top: -40px; position: relative; z-index: 10; 
-        }
-        .info-card { 
-            background: var(--putih); padding: 25px 20px; 
-            border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); 
-            text-align: center; border-top: 4px solid var(--biru-utama); 
-        }
-        .info-card i { font-size: 1.5rem; color: var(--biru-utama); margin-bottom: 15px; }
-        .info-card h3 { font-size: 0.95rem; margin-bottom: 8px; color: var(--biru-utama); text-transform: uppercase; }
-        .info-card p { font-size: 0.85rem; color: #666; line-height: 1.5; }
-
-        /* --- Formulir --- */
-        .order-section { padding: 40px 5%; }
-        .form-box { background: var(--putih); padding: 30px 20px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
-        .form-box h2 { font-size: 1.8rem; text-align: center; color: var(--biru-utama); margin-bottom: 30px; }
+        .slide:nth-child(1) { animation-delay: 0s; }
+        .slide:nth-child(2) { animation-delay: 5s; }
+        .slide:nth-child(3) { animation-delay: 10s; }
         
+        /* Overlay gradasi biru ultra-mewah yang lebih halus dari atas */
+        .hero::after { 
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+            background: linear-gradient(to bottom, rgba(6, 16, 34, 0.5) 0%, rgba(6, 16, 34, 0.2) 30%, rgba(6, 16, 34, 0.85) 100%); 
+            z-index: 1; 
+        }
+        .hero-content { position: relative; z-index: 2; color: var(--teks-terang); padding: 0 20px; }
+        .hero-content h1 { font-size: 3.5rem; line-height: 1.2; margin-bottom: 15px; font-weight: 700; color: var(--emas-pucat); text-shadow: 0 4px 15px rgba(0,0,0,0.6); }
+        .hero-content p { font-size: 1rem; letter-spacing: 3px; text-transform: uppercase; font-weight: 500; margin-bottom: 25px; color: var(--emas-utama); text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+        .btn-hero {
+            display: inline-block; background: var(--emas-utama); color: var(--bg-utama);
+            padding: 14px 35px; border-radius: var(--radius-bulat); text-decoration: none;
+            font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;
+            transition: var(--trans-halus); box-shadow: 0 8px 25px rgba(212, 175, 55, 0.25);
+        }
+        .btn-hero:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(212, 175, 55, 0.4); background: var(--emas-pucat); }
+
+        @keyframes fade-animation {
+            0% { opacity: 0; transform: scale(1); }
+            10% { opacity: 1; }
+            33% { opacity: 1; }
+            43% { opacity: 0; }
+            100% { opacity: 0; transform: scale(1.1); }
+        }
+
+        /* --- GLOBAL SECTION SPACING --- */
+        section { padding: 90px 5%; position: relative; z-index: 2; }
+        .section-title { font-size: 2.2rem; margin-bottom: 10px; font-weight: 700; color: var(--emas-pucat); text-align: center; }
+        .section-subtitle { font-size: 0.95rem; color: var(--teks-pudar); margin-bottom: 30px; text-align: center; font-weight: 400; }
+
+        /* --- SLIDER CONTAINER (CAROUSEL) UNTUK KATALOG & ULASAN --- */
+        .slider-container {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 20px;
+            padding: 15px 5px 30px;
+            margin: 0 -5px;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; 
+            -ms-overflow-style: none;  
+        }
+        .slider-container::-webkit-scrollbar { display: none; }
+
+        /* --- KATALOG (Koleksi) --- */
+        #koleksi { background: transparent; }
+        .catalog-card {
+            flex: 0 0 80%;
+            scroll-snap-align: center;
+            background: var(--bg-kartu); border-radius: var(--radius-xl); overflow: hidden;
+            box-shadow: var(--shadow-md); transition: var(--trans-halus);
+            cursor: pointer; border: 1px solid rgba(212, 175, 55, 0.15);
+        }
+        .catalog-card:hover { transform: translateY(-8px); box-shadow: 0 15px 35px rgba(212, 175, 55, 0.12); border-color: var(--emas-utama); }
+        .catalog-img { width: 100%; height: 220px; object-fit: cover; filter: brightness(0.9); transition: var(--trans-halus); }
+        .catalog-card:hover .catalog-img { filter: brightness(1.05); }
+        .catalog-info { padding: 22px; text-align: center; background: linear-gradient(to top, rgba(6, 16, 34, 0.4), transparent); }
+        .catalog-info h4 { font-size: 1.15rem; margin-bottom: 8px; color: var(--emas-pucat); font-weight: 600; }
+        .catalog-info p { font-size: 0.85rem; color: var(--emas-utama); font-weight: 600; background: rgba(212, 175, 55, 0.08); display: inline-block; padding: 5px 15px; border-radius: 20px; border: 1px solid rgba(212, 175, 55, 0.15); }
+
+        /* --- ULASAN (Review) --- */
+        #ulasan { background: transparent; }
+        .review-card { 
+            flex: 0 0 85%;
+            scroll-snap-align: center;
+            background: var(--bg-kartu); padding: 40px 30px; border-radius: var(--radius-xl); 
+            border: 1px solid rgba(212, 175, 55, 0.12); box-shadow: var(--shadow-md);
+            transition: var(--trans-halus);
+        }
+        .review-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(212, 175, 55, 0.1); border-color: var(--emas-utama); }
+        .review-card i.fa-quote-left { font-size: 2rem; color: rgba(212, 175, 55, 0.15); margin-bottom: 15px; }
+        .review-card .stars { color: var(--emas-utama); margin-bottom: 15px; font-size: 0.9rem; text-shadow: 0 0 5px rgba(212, 175, 55, 0.3); }
+        .review-text { font-size: 0.95rem; font-style: italic; color: var(--teks-terang); margin-bottom: 25px; line-height: 1.75; }
+        .reviewer-profile { display: flex; align-items: center; gap: 15px; border-top: 1px solid rgba(212, 175, 55, 0.15); padding-top: 15px; }
+        .reviewer-avatar { width: 45px; height: 45px; border-radius: 50%; background: rgba(212, 175, 55, 0.1); color: var(--emas-utama); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1.2rem; border: 1px solid rgba(212, 175, 55, 0.2); }
+        .reviewer-info h5 { font-weight: 600; color: var(--emas-pucat); font-size: 0.95rem; }
+        .reviewer-info span { font-size: 0.75rem; color: var(--emas-utama); font-weight: 500; }
+
+        /* --- FORMULIR PEMESANAN (Order) --- */
+        #order { background: transparent; position: relative; }
+        .form-box { 
+            background: var(--bg-kartu); padding: 50px 30px; 
+            border-radius: var(--radius-xl); box-shadow: var(--shadow-md); 
+            max-width: 900px; margin: 0 auto; 
+            border: 1px solid rgba(212, 175, 55, 0.15);
+        }
+        .form-box h2 { font-size: 2.2rem; text-align: center; margin-bottom: 35px; font-weight: 700; color: var(--emas-pucat); }
         .form-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
-        
-        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.7rem; text-transform: uppercase; color: var(--biru-utama); }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 500; font-size: 0.85rem; color: var(--emas-utama); letter-spacing: 0.5px; }
         .form-group input, .form-group select, .form-group textarea {
-            width: 100%; padding: 12px 15px; border: 1.5px solid #eee; border-radius: 10px; 
-            background: #fafafa; font-size: 16px; 
-            font-family: 'Montserrat', sans-serif; transition: 0.3s;
+            width: 100%; padding: 16px 20px; border: 1.5px solid rgba(212, 175, 55, 0.15); 
+            border-radius: var(--radius-md); background: var(--bg-utama); 
+            font-size: 0.95rem; font-family: 'Poppins', sans-serif; 
+            color: var(--teks-terang); transition: var(--trans-halus);
         }
-        .form-group input:focus { outline: none; border-color: var(--biru-utama); background: #fff; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { 
+            outline: none; border-color: var(--emas-utama); background: var(--bg-kartu); 
+            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.15);
+        }
+        /* Style opsi select */
+        .form-group select option {
+            background: var(--bg-kartu);
+            color: var(--teks-terang);
+        }
 
         .btn-kirim { 
-            width: 100%; background: var(--biru-utama); color: white; 
-            padding: 18px; border: none; border-radius: 50px; 
-            font-size: 0.9rem; font-weight: 600; text-transform: uppercase; 
-            letter-spacing: 1px; cursor: pointer; margin-top: 25px; 
+            width: 100%; background: var(--emas-utama); color: var(--bg-utama); 
+            padding: 18px; border: none; border-radius: var(--radius-bulat); 
+            font-size: 1rem; font-weight: 700; text-transform: uppercase; 
+            letter-spacing: 1.5px; cursor: pointer; margin-top: 35px; 
             display: flex; justify-content: center; align-items: center; gap: 10px;
+            transition: var(--trans-halus); font-family: 'Poppins', sans-serif;
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.2);
         }
+        .btn-kirim:hover { background: var(--emas-pucat); transform: translateY(-3px); box-shadow: 0 12px 30px rgba(212, 175, 55, 0.35); }
 
-        /* --- Bagian Bantuan --- */
-        .bantuan-section { padding: 50px 5%; text-align: center; background: #fff; }
-        .bantuan-section h3 { font-size: 1.5rem; color: var(--biru-utama); margin-bottom: 10px; }
-        .bantuan-section p { font-size: 0.9rem; color: #777; margin-bottom: 20px; }
+        /* --- BANTUAN & FOOTER (Contact) --- */
+        #contact { background: transparent; text-align: center; }
+        .contact-box { background: var(--bg-kartu); padding: 50px; border-radius: var(--radius-xl); border: 1px dashed var(--emas-utama); box-shadow: var(--shadow-md); }
+        #contact h3 { font-size: 1.8rem; margin-bottom: 10px; color: var(--emas-pucat); }
+        #contact p { font-size: 0.95rem; color: var(--teks-pudar); margin-bottom: 25px; }
         .btn-wa-tanya {
             display: inline-flex; align-items: center; gap: 10px;
-            background: transparent; color: #25d366; border: 2px solid #25d366;
-            padding: 12px 30px; border-radius: 50px; text-decoration: none;
-            font-weight: 600; font-size: 0.9rem;
+            background: #25D366; 
+            color: var(--putih); padding: 15px 35px; border-radius: var(--radius-bulat); 
+            text-decoration: none; font-weight: 600; font-size: 1rem; box-shadow: 0 8px 20px rgba(37, 211, 102, 0.2);
+            transition: var(--trans-halus);
+        }
+        .btn-wa-tanya:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(37, 211, 102, 0.35); background: #22c35e; }
+
+        footer { text-align: center; padding: 40px 20px; background: #030812; color: var(--teks-pudar); border-top: 1px solid rgba(212, 175, 55, 0.1); }
+        .footer-logo { font-family: 'Playfair Display', serif; font-size: 2rem; font-style: italic; margin-bottom: 15px; color: var(--emas-utama); }
+        footer p { font-size: 0.85rem; opacity: 0.6; font-weight: 300; }
+
+        /* --- TOAST & ANIMASI REVEAL --- */
+        .toast-notification {
+            position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
+            background: var(--bg-kartu); color: var(--emas-pucat); border: 1px solid var(--emas-utama); border-bottom: 4px solid var(--emas-utama);
+            padding: 15px 25px; border-radius: var(--radius-md);
+            display: flex; align-items: center; gap: 12px;
+            box-shadow: var(--shadow-md); z-index: 9999;
+            font-size: 0.95rem; font-weight: 500;
+            transition: top 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        .toast-notification.show { top: 30px; }
+
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* --- RESPONSIVE MOBILE & DESKTOP --- */
+        @media (max-width: 768px) {
+            .hamburger { display: flex; }
+            
+            /* Rombak Total Sistem Menu Mobile agar estetik dan clean */
+            .nav-menu {
+                position: absolute; 
+                top: 100%; 
+                left: 0; 
+                flex-direction: column; 
+                background: rgba(6, 16, 34, 0.98); 
+                backdrop-filter: blur(15px);
+                width: 100%; 
+                text-align: left; 
+                box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
+                border-bottom: 3px solid var(--emas-utama);
+                padding: 0; 
+                gap: 0;
+                
+                /* Efek transisi buka-tutup slide down premium */
+                max-height: 0;
+                opacity: 0;
+                overflow: hidden;
+                pointer-events: none;
+                transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+            }
+            .nav-menu.active { 
+                max-height: 350px; 
+                opacity: 1;
+                pointer-events: auto;
+                padding: 10px 0;
+            }
+            .nav-menu li { 
+                width: 100%;
+                margin: 0; 
+            }
+            .nav-menu li a { 
+                font-size: 0.95rem; 
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 14px 24px; 
+                color: var(--teks-terang);
+                border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+                font-weight: 600;
+                transition: var(--trans-cepat);
+            }
+            /* Hilangkan border bawah di menu terakhir */
+            .nav-menu li:last-child a {
+                border-bottom: none;
+            }
+            /* Efek hover geser estetik di HP */
+            .nav-menu li a:active, .nav-menu li a:hover {
+                background: var(--bg-kartu);
+                color: var(--emas-utama);
+                padding-left: 30px; 
+            }
+            /* Tambah panah chevron di kanan menu list */
+            .nav-menu li a::after {
+                content: '\f105'; 
+                font-family: 'Font Awesome 6 Free';
+                font-weight: 900;
+                font-size: 0.85rem;
+                color: var(--emas-utama);
+                transition: var(--trans-cepat);
+            }
+            .nav-menu li a:active::after, .nav-menu li a:hover::after {
+                transform: translateX(3px);
+            }
+            
+            /* Penyesuaian konten lain di layar HP */
+            section { padding: 55px 5%; } 
+            .section-title { font-size: 1.8rem; margin-bottom: 5px; }
+            .section-subtitle { font-size: 0.85rem; margin-bottom: 25px; }
+            
+            /* Tinggi Hero Full Screen di HP (Konsisten!) */
+            .hero { 
+                height: 100vh; 
+                height: 100dvh; /* Menjamin True Full Screen di HP */
+            } 
+            .hero-content h1 { font-size: 2.2rem; margin-bottom: 10px; }
+            .hero-content p { font-size: 0.85rem; margin-bottom: 15px; letter-spacing: 2px; }
+            .btn-hero { padding: 10px 25px; font-size: 0.9rem; }
+            
+            .catalog-img { height: 180px; } /* Gambar dikurangi tingginya */
+            .catalog-info { padding: 15px; }
+            
+            .review-card { padding: 25px 20px; }
+            .review-text { font-size: 0.9rem; margin-bottom: 20px; }
+            
+            .form-box { padding: 35px 20px; border-radius: 15px; }
+            .form-box h2 { font-size: 1.8rem; margin-bottom: 25px; }
+            .form-group input, .form-group select, .form-group textarea { padding: 12px 15px; font-size: 0.9rem; }
+            .btn-kirim { padding: 15px; font-size: 0.9rem; margin-top: 25px; }
+            
+            .contact-box { padding: 35px 20px; }
+            #contact h3 { font-size: 1.5rem; }
+            #contact p { font-size: 0.85rem; }
+            .btn-wa-tanya { padding: 12px 25px; font-size: 0.9rem; }
+            
+            footer { padding: 30px 15px; }
+            .footer-logo { font-size: 1.5rem; }
         }
 
-        /* --- Footer --- */
-        footer { text-align: center; padding: 40px 20px; background: var(--biru-utama); color: #fff; }
-        .footer-logo { font-size: 1.5rem; font-style: italic; margin-bottom: 10px; }
-        footer p { font-size: 0.75rem; opacity: 0.8; }
-
-        /* --- Desktop Optimization --- */
-        @media (min-width: 768px) {
+        @media (min-width: 769px) {
             nav { padding: 20px 8%; }
-            .hero { height: 80vh; }
-            .hero-content h1 { font-size: 4rem; }
-            .info-section { grid-template-columns: repeat(3, 1fr); padding: 0 8% 50px; }
+            /* Desktop Layout: menyesuaikan lebar kartu di dalam slider horizontal */
+            .catalog-card { flex: 0 0 calc(25% - 20px); scroll-snap-align: start; }
+            .review-card { flex: 0 0 calc(33.333% - 20px); scroll-snap-align: start; }
+            
             .form-grid { grid-template-columns: 1fr 1fr; }
             .full { grid-column: span 2; }
-            .order-section { padding: 60px 15%; }
-            .form-box { padding: 50px; }
+            .form-box { padding: 60px; }
+            .btn-kirim { width: 50%; margin: 35px auto 0; }
+            .contact-box { max-width: 700px; margin: 0 auto; }
         }
     </style>
 </head>
 <body>
 
-    <nav>
-        <a href="#" class="logo">Nouwr's Gift.</a>
-        <a href="https://instagram.com/nouwr.s_gift" target="_blank" class="nav-social">
-            <span>Katalog</span>
-            <i class="fab fa-instagram"></i>
-        </a>
+    <!-- Animasi Glow Lembut (Aesthetic Ambient) -->
+    <div class="ambient-glow"></div>
+    <div class="ambient-glow-2"></div>
+
+    <!-- Container untuk Partikel Emas Melayang -->
+    <div class="bg-particles" id="particles-container"></div>
+
+    <!-- Toast Error Notification -->
+    <div id="toast" class="toast-notification">
+        <i class="fas fa-exclamation-circle" style="color: var(--emas-utama);"></i>
+        <span id="toast-msg">Pesan error disini</span>
+    </div>
+
+    <!-- NAVBAR (Baru) -->
+    <nav id="navbar">
+        <a href="#home" class="logo">Nouwr's.</a>
+        <ul class="nav-menu">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#koleksi">Koleksi</a></li>
+            <li><a href="#ulasan">Ulasan</a></li>
+            <li><a href="#order">Order</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="hamburger">
+            <i class="fas fa-bars"></i>
+        </div>
     </nav>
 
-    <!-- Banner Slider -->
-    <section class="hero">
+    <!-- HERO SECTION (ID: home) -->
+    <section id="home" class="hero" style="padding: 0;">
         <div class="slider-wrapper">
-            <div class="slide" style="background-image: url('foto1.png');"></div>
-            <div class="slide" style="background-image: url('foto2.png');"></div>
-            <div class="slide" style="background-image: url('foto3.png');"></div>
-            <div class="slide" style="background-image: url('foto4.png');"></div>
-            <div class="slide" style="background-image: url('foto5.png');"></div>
+            <div class="slide" style="background-image: url('https://i.pinimg.com/1200x/49/4d/0d/494d0d350688fa09a6dd2143d1ab7dc0.jpg');"></div>
+            <div class="slide" style="background-image: url('https://i.pinimg.com/1200x/c7/a6/bb/c7a6bbb09373a8d8f021e54783ea411d.jpg');"></div>
+            <div class="slide" style="background-image: url('https://i.pinimg.com/736x/c8/e1/15/c8e1154915654a9726b2379d184ecc9b.jpg');"></div>
         </div>
         <div class="hero-content">
-            <p>Seni dalam Setiap Rangkaian</p>
-            <h1>Indah &<br>Berkesan</h1>
+            <p>Rangkaian Kasih, Sentuhan Elegan</p>
+            <h1>Spesial Untuk<br>Momen Terbaikmu</h1>
+            <a href="#order" class="btn-hero">Pesan Sekarang</a>
         </div>
     </section>
 
-    <!-- Info -->
-    <section class="info-section">
-        <div class="info-card">
-            <i class="far fa-clock"></i>
-            <h3>Jam Operasional</h3>
-            <p>Senin - Sabtu: 09:00 - 18:00<br>Minggu: Libur</p>
-        </div>
-        <div class="info-card">
-            <i class="fas fa-truck"></i>
-            <h3>Pengiriman</h3>
-            <p>Serang - Cilegon dan sekitarnya<br>Packing Aman & Terjaga</p>
-        </div>
-        <div class="info-card">
-            <i class="far fa-heart"></i>
-            <h3>Custom Order</h3>
-            <p>Request warna & budget<br>sesuai keinginan Anda</p>
+    <!-- KATALOG (ID: koleksi) -->
+    <section id="koleksi">
+        <h2 class="section-title reveal">Koleksi Terfavorit</h2>
+        <p class="section-subtitle reveal">Pilih buket yang paling pas untuk mengekspresikan perasaanmu.</p>
+        
+        <!-- Wadah slider baru untuk katalog -->
+        <div class="slider-container" id="katalog-slider">
+            <div class="catalog-card reveal">
+                <img src="foto2.png?auto=format&fit=crop&w=500&q=80" alt="Buket Bunga" class="catalog-img">
+                <div class="catalog-info">
+                    <h4>Buket Bunga</h4>
+                    <p>Bebas Request</p>
+                </div>
+            </div>
+            <div class="catalog-card reveal">
+                <img src="foto5.png?auto=format&fit=crop&w=500&q=80" alt="Buket Snack" class="catalog-img">
+                <div class="catalog-info">
+                    <h4>Buket Snack Lucu</h4>
+                    <p>Request Isi</p>
+                </div>
+            </div>
+            <div class="catalog-card reveal">
+                <img src="foto4.png?auto=format&fit=crop&w=500&q=80" alt="Buket Uang" class="catalog-img">
+                <div class="catalog-info">
+                    <h4>Money Bouquet</h4>
+                    <p>Bisa Request Nominal</p>
+                </div>
+            </div>
+            <div class="catalog-card reveal">
+                <img src="foto1.png?auto=format&fit=crop&w=500&q=80" alt="Buket Custom" class="catalog-img">
+                <div class="catalog-info">
+                    <h4>Buket Logam Mulia</h4>
+                    <p>Include Aksesoris</p>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- Form Pemesanan -->
-    <section class="order-section">
-        <div class="form-box">
-            <h2>Pesan Buket</h2>
-            <form id="orderForm">
+    <!-- ULASAN (ID: ulasan) -->
+    <section id="ulasan">
+        <h2 class="section-title reveal">Cerita Mereka</h2>
+        <p class="section-subtitle reveal">Ratusan pelanggan telah mempercayakan momen mereka pada kami.</p>
+        
+        <!-- Wadah slider baru untuk ulasan -->
+        <div class="slider-container" id="ulasan-slider">
+            <div class="review-card reveal">
+                <i class="fas fa-quote-left"></i>
+                <div class="stars">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                <p class="review-text">"Suka banget sama warnanya, birunya bener-bener nyala! Adminnya super responsif dan sabar ngeladenin request custom."</p>
+                <div class="reviewer-profile">
+                    <div class="reviewer-avatar">R</div>
+                    <div class="reviewer-info">
+                        <h5>Rina Mulyani</h5>
+                        <span>Buket Wisuda</span>
+                    </div>
+                </div>
+            </div>
+            <div class="review-card reveal">
+                <i class="fas fa-quote-left"></i>
+                <div class="stars">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                </div>
+                <p class="review-text">"Pesan dadakan buat anniversary, untung bisa dibantu proses cepat. Wrappingnya rapi dan wanginya enak banget. Istri saya seneng parah!"</p>
+                <div class="reviewer-profile">
+                    <div class="reviewer-avatar">A</div>
+                    <div class="reviewer-info">
+                        <h5>Andri S.</h5>
+                        <span>Buket Bunga L</span>
+                    </div>
+                </div>
+            </div>
+            <div class="review-card reveal">
+                <i class="fas fa-quote-left"></i>
+                <div class="stars">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                <p class="review-text">"Buket snacknya padet, nggak pelit isi. Harganya juga bersahabat buat kantong mahasiswa. Next time pasti order kesini lagi."</p>
+                <div class="reviewer-profile">
+                    <div class="reviewer-avatar">D</div>
+                    <div class="reviewer-info">
+                        <h5>Dinda K.</h5>
+                        <span>Buket Snack</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FORM (ID: order) -->
+    <section id="order">
+        <div class="form-box reveal">
+            <h2>Pesan Buket Anda</h2>
+            <form id="orderForm" onsubmit="event.preventDefault();">
                 <div class="form-grid">
                     <div class="form-group">
-                        <label>Nama Lengkap</label>
-                        <input type="text" id="nama" placeholder="Nama Anda" required>
+                        <label>Nama Lengkap Anda</label>
+                        <input type="text" id="nama" placeholder="Cth: Nabila Putri" required>
                     </div>
                     <div class="form-group">
-                        <label>Jenis Buket</label>
+                        <label>Ingin Pesan Buket Apa?</label>
                         <select id="tipe" required>
-                            <option value="">Pilih Jenis</option>
-                            <option value="Buket Bunga">Buket Bunga</option>
+                            <option value="" disabled selected>-- Pilih Jenis --</option>
+                            <option value="Buket Bunga">Buket Bunga (Kawat Bulu)</option>
                             <option value="Buket Snack">Buket Snack</option>
-                            <option value="Buket Uang">Buket Uang</option>
+                            <option value="Buket Uang">Buket Uang (Money Bouquet)</option>
                             <option value="Buket Wisuda">Buket Wisuda</option>
                             <option value="Buket Logam Mulia">Buket Logam Mulia</option>
-                            <option value="Buket Pita Satin">Buket Pita Satin</option>
-                            <option value="Buket Custom">Buket Custom</option>
+                            <option value="Buket Custom">Buket Custom Lainnya</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Ukuran Buket</label>
+                        <label>Pilih Ukuran</label>
                         <select id="ukuran" required>
-                            <option value="">Pilih Ukuran</option>
-                            <option value="Single Buket">Single Buket</option>
-                            <option value="Small (S)">Small (S)</option>
-                            <option value="Medium (M)">Medium (M)</option>
-                            <option value="Large (L)">Large (L)</option>
-                            <option value="Extra Large (XL)">Extra Large (XL)</option>
+                            <option value="" disabled selected>-- Pilih Ukuran --</option>
+                            <option value="Single Buket">Single (Kecil)</option>
+                            <option value="Small (S)">Small</option>
+                            <option value="Medium (M)">Medium (Standar)</option>
+                            <option value="Large (L)">Large (Besar)</option>
+                            <option value="Extra Large (XL)">Extra Large (Jumbo)</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Tanggal Acara</label>
+                        <label>Tanggal Diperlukan</label>
                         <input type="date" id="tgl" required>
                     </div>
                     <div class="form-group">
-                        <label>Budget (Rp)</label>
-                        <input type="number" id="budget" placeholder="Contoh: 150000">
+                        <label>Batas Budget (Opsional)</label>
+                        <input type="number" id="budget" placeholder="Cth: 150000">
                     </div>
                     <div class="form-group full">
-                        <label>Detail Pesanan</label>
-                        <textarea id="catatan" rows="3" placeholder="Warna, tulisan kartu, dll..."></textarea>
+                        <label>Request Khusus (Warna / Tema / Isi Kartu)</label>
+                        <textarea id="catatan" rows="3" placeholder="Contoh: Nuansa kertas wrapping warna biru dan emas, tolong tulis di kartu: 'Happy Graduation ya!'"></textarea>
                     </div>
                 </div>
                 <button type="button" onclick="kirimWhatsApp()" class="btn-kirim">
-                    <i class="fab fa-whatsapp"></i> Kirim Pesanan
+                    Order <i class="fab fa-whatsapp" style="font-size: 1.2rem;"></i>
                 </button>
             </form>
         </div>
     </section>
 
-    <!-- Bantuan -->
-    <section class="bantuan-section">
-        <h3>Masih Bingung?</h3>
-        <p>Konsultasi gratis dengan admin kami.</p>
-        <a href="https://wa.me/6285217382062?text=Halo%20Nouwr's%20Handmade,%20saya%20mau%20tanya%20dulu%20ya.." target="_blank" class="btn-wa-tanya">
-            <i class="fab fa-whatsapp"></i> Chat Sekarang
-        </a>
+    <!-- CONTACT (ID: contact) -->
+    <section id="contact">
+        <div class="contact-box reveal">
+            <h3 class="serif-font">Butuh Inspirasi Desain?</h3>
+            <p>Jangan ragu untuk bertanya! Tim kami siap membantu mencocokkan ide buket dengan budget yang Anda miliki secara gratis.</p>
+            <a href="https://wa.me/6285217382062?text=Halo%20Nouwr's,%20saya%20mau%20konsultasi%20untuk%20pemesanan%20buket..." target="_blank" class="btn-wa-tanya">
+                <i class="fab fa-whatsapp"></i> Chat Admin Sekarang
+            </a>
+        </div>
     </section>
 
     <footer>
         <div class="footer-logo">Nouwr's.</div>
-        <p>&copy; 2026 Nouwr's Handmade.<br>Dibuat dengan cinta untuk momen berharga Anda.</p>
+        <p>&copy; 2026 Nouwr's Handmade.<br>Serang, Banten, Indonesia.</p>
     </footer>
 
     <script>
+        // --- LOGIKA NAVBAR MOBILE (Hamburger Menu) ---
+        const hamburger = document.querySelector(".hamburger");
+        const navMenu = document.querySelector(".nav-menu");
+        const navLinks = document.querySelectorAll(".nav-menu li a");
+
+        hamburger.addEventListener("click", () => {
+            navMenu.classList.toggle("active");
+            if(navMenu.classList.contains("active")){
+                hamburger.innerHTML = '<i class="fas fa-times"></i>';
+            } else {
+                hamburger.innerHTML = '<i class="fas fa-bars"></i>';
+            }
+        });
+
+        navLinks.forEach(link => {
+            link.addEventListener("click", () => {
+                navMenu.classList.remove("active");
+                hamburger.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+
+        // --- LOGIKA TOAST & WHATSAPP ---
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-msg');
+            toastMsg.innerText = message;
+            toast.classList.add('show');
+            setTimeout(() => { toast.classList.remove('show'); }, 3500);
+        }
+
         function kirimWhatsApp() {
             const waAdmin = "6285217382062"; 
-            
-            const n = document.getElementById('nama').value;
+            const n = document.getElementById('nama').value.trim();
             const t = document.getElementById('tipe').value;
             const u = document.getElementById('ukuran').value;
             const d = document.getElementById('tgl').value;
             const b = document.getElementById('budget').value;
-            const c = document.getElementById('catatan').value;
+            const c = document.getElementById('catatan').value.trim();
 
             if(!n || !t || !u || !d) {
-                alert("Mohon isi Nama, Jenis, Ukuran, dan Tanggal ya kak!");
+                showToast("Oops! Mohon lengkapi form ya.");
                 return;
             }
-
-            const teks = `*FORM PESANAN NOUWR'S*%0A` +
-                         `------------------------------%0A` +
-                         `*Nama:* ${n}%0A` +
-                         `*Jenis:* ${t}%0A` +
-                         `*Ukuran:* ${u}%0A` +
-                         `*Tanggal:* ${d}%0A` +
-                         `*Budget:* Rp ${b || '-'}%0A` +
-                         `*Catatan:* ${c || '-'}%0A` +
-                         `------------------------------%0A` +
-                         `Mohon dibantu proses ya, Kak!`;
+            
+            const teks = `*PESANAN BARU - NOUWR'S HANDMADE*%0A` +
+                         `--------------------------------%0A` +
+                         `👤 *Nama:* ${n}%0A` +
+                         `💐 *Jenis:* ${t}%0A` +
+                         `📏 *Ukuran:* ${u}%0A` +
+                         `📅 *Tgl Diperlukan:* ${d}%0A` +
+                         `💰 *Budget:* Rp ${b || 'Menyesuaikan'}%0A` +
+                         `📝 *Request:* ${c || 'Tidak ada'}%0A` +
+                         `--------------------------------%0A` +
+                         `Halo kak, tolong dibantu proses pesanannya ya. Terima kasih!`;
 
             window.open(`https://wa.me/${waAdmin}?text=${teks}`, '_blank');
         }
+
+        // --- FUNGSI AUTO-SCROLL UNTUK SLIDER ---
+        function startAutoScroll(containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            let scrollInterval;
+            
+            const scrollNext = () => {
+                const card = container.firstElementChild;
+                if (!card) return;
+                
+                const cardWidth = card.clientWidth + 20; 
+                
+                if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 10) {
+                    container.scrollTo({ left: 0, behavior: 'smooth' });
+                } else {
+                    container.scrollBy({ left: cardWidth, behavior: 'smooth' });
+                }
+            };
+
+            const start = () => { scrollInterval = setInterval(scrollNext, 3000); };
+            const stop = () => { clearInterval(scrollInterval); };
+
+            start();
+            container.addEventListener('mouseenter', stop);
+            container.addEventListener('mouseleave', start);
+            container.addEventListener('touchstart', stop, {passive: true});
+            container.addEventListener('touchend', start);
+        }
+
+        // --- INISIALISASI SAAT HALAMAN DIMUAT ---
+        document.addEventListener('DOMContentLoaded', function() {
+            // Batasi kalender tidak bisa pilih tanggal kemarin
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('tgl').setAttribute('min', today);
+
+            // Buat efek partikel emas berjalan di latar belakang secara dinamis
+            const particlesContainer = document.getElementById('particles-container');
+            const totalParticles = window.innerWidth < 768 ? 12 : 25; // Batasi jumlah di HP biar enteng
+
+            for (let i = 0; i < totalParticles; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const size = Math.random() * 4 + 2; 
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                particle.style.left = `${Math.random() * 100}vw`;
+                
+                particle.style.animationDelay = `${Math.random() * 15}s`;
+                particle.style.animationDuration = `${Math.random() * 12 + 15}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+
+            // Aktifkan auto-scroll slider horizontal
+            startAutoScroll('katalog-slider');
+            startAutoScroll('ulasan-slider');
+
+            // Animasi Scroll Reveal (Muncul pelan-pelan)
+            const observerOptions = { threshold: 0.1, rootMargin: "0px 0px -20px 0px" };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target); 
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.reveal').forEach((el, index) => {
+                el.style.transitionDelay = `${(index % 3) * 0.15}s`; 
+                observer.observe(el);
+            });
+        });
     </script>
 </body>
-</html>
+</html>	
