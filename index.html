@@ -3,797 +3,788 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Nouwr's Handmade | Buket Estetik</title>
+    <title>PDF Studio | Pro Document Compiler</title>
     
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
     
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        playfair: ['"Playfair Display"', 'serif'],
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        black: '#0a0a0a',
+                        dark: '#171717',
+                        canvas: '#fafafa',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+
     <style>
-        /* --- DESIGN SYSTEM: Luxury Blue & Gold (Dark Theme) --- */
-        :root {
-            /* Palette Biru Malam & Emas Premium */
-            --bg-utama: #061022;       /* Biru gelap malam untuk latar belakang utama */
-            --bg-kartu: #0F1E36;       /* Midnight blue untuk kartu & kotak form (mengganti putih) */
-            --biru-sorot: #1A2E4C;     /* Biru navy sedang untuk input dan hover */
-            
-            --emas-utama: #D4AF37;     /* Emas metalik premium untuk aksen, tombol & bintang */
-            --emas-medium: #C59B27;    /* Emas sedang untuk hover interaktif */
-            --emas-pucat: #F3E5AB;     /* Emas sangat muda (soft cream) untuk teks kontras tinggi */
-            
-            --teks-terang: #E2E8F0;    /* Putih abu-abu lembut agar nyaman dibaca di latar gelap */
-            --teks-pudar: #94A3B8;     /* Abu-abu pudar untuk sub-detail */
-            
-            /* Shadows & Radius (Modern & Soft) */
-            --shadow-gold: 0 10px 30px rgba(212, 175, 55, 0.08);
-            --shadow-sm: 0 4px 15px rgba(0, 0, 0, 0.5);
-            --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.7);
-            --radius-md: 12px;
-            --radius-xl: 20px;
-            --radius-bulat: 50px;
-            
-            /* Transitions */
-            --trans-cepat: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            --trans-halus: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        body {
+            background-color: #fafafa;
+            background-image: radial-gradient(#d4d4d4 1px, transparent 1px);
+            background-size: 24px 24px;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #d1d5db; 
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af; 
+        }
+
+        .sortable-ghost {
+            opacity: 0.2;
+            background-color: #f3f4f6;
+            border: 2px dashed #0a0a0a;
+            border-radius: 0.5rem;
+            transform: scale(0.98);
+        }
         
-        /* Smooth scrolling saat klik menu */
-        html { scroll-behavior: smooth; scroll-padding-top: 80px; height: 100%; }
-        
-        body { 
-            background-color: var(--bg-utama); 
-            color: var(--teks-terang); 
-            font-family: 'Poppins', sans-serif;
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-            min-height: 100%;
-            overflow-x: hidden;
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0,0,0,0.06);
         }
 
-        h1, h2, h3, .serif-font { 
-            font-family: 'Playfair Display', serif; 
-            color: var(--emas-pucat);
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
-
-        /* --- BACKGROUND ANIMATION (GOLD DUST & GLOW) --- */
-        .ambient-glow {
-            position: fixed;
-            top: -20%;
-            left: -20%;
-            width: 70vw;
-            height: 70vw;
-            background: radial-gradient(circle, rgba(212, 175, 55, 0.04) 0%, transparent 70%);
-            z-index: -2;
-            pointer-events: none;
-            animation: pulseGlow 12s infinite alternate ease-in-out;
-        }
-        .ambient-glow-2 {
-            position: fixed;
-            bottom: -20%;
-            right: -20%;
-            width: 70vw;
-            height: 70vw;
-            background: radial-gradient(circle, rgba(212, 175, 55, 0.04) 0%, transparent 70%);
-            z-index: -2;
-            pointer-events: none;
-            animation: pulseGlow 16s infinite alternate-reverse ease-in-out;
-        }
-        @keyframes pulseGlow {
-            0% { transform: scale(1) translate(0, 0); }
-            100% { transform: scale(1.2) translate(80px, -50px); }
-        }
-
-        /* Container Partikel Emas Melayang */
-        .bg-particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-            overflow: hidden;
-        }
-        .particle {
-            position: absolute;
-            background: radial-gradient(circle, rgba(212, 175, 55, 0.8) 0%, rgba(212, 175, 55, 0) 70%);
-            border-radius: 50%;
+        .animate-fade-in-up {
+            animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             opacity: 0;
-            animation: floatGold 22s infinite linear;
-        }
-        @keyframes floatGold {
-            0% { transform: translateY(110vh) translateX(0) scale(0.8); opacity: 0; }
-            10% { opacity: 0.6; }
-            90% { opacity: 0.6; }
-            100% { transform: translateY(-10vh) translateX(100px) scale(0.3); opacity: 0; }
-        }
-
-        /* --- NAVIGASI BAR (Dibuat Transparan Penuh & Overlay di Atas Hero) --- */
-        nav {
-            display: flex; justify-content: space-between; align-items: center; 
-            padding: 0 5%;
-            height: 75px;
-            background: transparent; /* Diubah menjadi transparan penuh */
-            backdrop-filter: none; /* Menghapus efek blur agar benar-benar bersih melayang */
-            position: absolute; top: 0; left: 0; width: 100%; z-index: 1000; 
-            box-shadow: none; /* Menghapus bayangan kotak */
-            transition: var(--trans-halus);
-            border-bottom: none; /* Menghapus garis pemisah agar menyatu dengan slideshow */
-        }
-        .logo { 
-            font-family: 'Playfair Display', serif; font-size: 1.6rem; 
-            font-style: italic; font-weight: 700; text-decoration: none; 
-            color: var(--emas-utama); 
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); /* Shadow tipis agar kontras di atas foto */
         }
         
-        /* Menu Links (Desktop) */
-        .nav-menu {
-            display: flex; list-style: none; gap: 30px;
+        @keyframes floatUpDown {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
         }
-        .nav-menu li a {
-            text-decoration: none; color: var(--teks-terang);
-            font-weight: 500; font-size: 0.95rem;
-            position: relative; padding-bottom: 5px;
-            transition: var(--trans-cepat);
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-        }
-        .nav-menu li a::after {
-            content: ''; position: absolute; left: 0; bottom: 0;
-            width: 0; height: 2px; background: var(--emas-utama);
-            transition: var(--trans-halus); border-radius: 2px;
-        }
-        .nav-menu li a:hover { color: var(--emas-utama); }
-        .nav-menu li a:hover::after { width: 100%; }
-
-        /* Hamburger Menu Toggle Button (Mobile) */
-        .hamburger {
-            display: none; cursor: pointer; color: var(--emas-utama); font-size: 1.3rem;
-            width: 42px; height: 42px; border-radius: 50%;
-            background: rgba(6, 16, 34, 0.4); /* Background semi-transparan tipis agar tombol tetap terlihat jelas */
-            backdrop-filter: blur(5px);
-            align-items: center; justify-content: center;
-            transition: var(--trans-cepat); border: 1px solid rgba(212, 175, 55, 0.25);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
-        .hamburger:active {
-            transform: scale(0.9);
-            background: rgba(212, 175, 55, 0.2);
-        }
-
-        /* --- HERO SECTION (TRUE FULL SCREEN OVERLAY) --- */
-        .hero {
-            position: relative; 
-            height: 100vh; /* Diubah agar mengambil 100% tinggi layar penuh */
-            height: 100dvh; /* Menggunakan DVH dinamis untuk mobile */
-            width: 100%; 
-            overflow: hidden;
-            display: flex; justify-content: center; align-items: center; text-align: center;
-            background: var(--bg-utama);
-        }
-        .slider-wrapper {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;
-        }
-        .slide { 
-            position: absolute; top: 0; left: 0;
-            width: 100%; height: 100%; background-size: cover; background-position: center; 
-            opacity: 0;
-            animation: fade-animation 15s infinite linear; 
-        }
-        
-        .slide:nth-child(1) { animation-delay: 0s; }
-        .slide:nth-child(2) { animation-delay: 5s; }
-        .slide:nth-child(3) { animation-delay: 10s; }
-        
-        /* Overlay gradasi biru ultra-mewah yang lebih halus dari atas */
-        .hero::after { 
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-            background: linear-gradient(to bottom, rgba(6, 16, 34, 0.5) 0%, rgba(6, 16, 34, 0.2) 30%, rgba(6, 16, 34, 0.85) 100%); 
-            z-index: 1; 
-        }
-        .hero-content { position: relative; z-index: 2; color: var(--teks-terang); padding: 0 20px; }
-        .hero-content h1 { font-size: 3.5rem; line-height: 1.2; margin-bottom: 15px; font-weight: 700; color: var(--emas-pucat); text-shadow: 0 4px 15px rgba(0,0,0,0.6); }
-        .hero-content p { font-size: 1rem; letter-spacing: 3px; text-transform: uppercase; font-weight: 500; margin-bottom: 25px; color: var(--emas-utama); text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
-        .btn-hero {
-            display: inline-block; background: var(--emas-utama); color: var(--bg-utama);
-            padding: 14px 35px; border-radius: var(--radius-bulat); text-decoration: none;
-            font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;
-            transition: var(--trans-halus); box-shadow: 0 8px 25px rgba(212, 175, 55, 0.25);
-        }
-        .btn-hero:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(212, 175, 55, 0.4); background: var(--emas-pucat); }
-
-        @keyframes fade-animation {
-            0% { opacity: 0; transform: scale(1); }
-            10% { opacity: 1; }
-            33% { opacity: 1; }
-            43% { opacity: 0; }
-            100% { opacity: 0; transform: scale(1.1); }
-        }
-
-        /* --- GLOBAL SECTION SPACING --- */
-        section { padding: 90px 5%; position: relative; z-index: 2; }
-        .section-title { font-size: 2.2rem; margin-bottom: 10px; font-weight: 700; color: var(--emas-pucat); text-align: center; }
-        .section-subtitle { font-size: 0.95rem; color: var(--teks-pudar); margin-bottom: 30px; text-align: center; font-weight: 400; }
-
-        /* --- SLIDER CONTAINER (CAROUSEL) UNTUK KATALOG & ULASAN --- */
-        .slider-container {
-            display: flex;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            gap: 20px;
-            padding: 15px 5px 30px;
-            margin: 0 -5px;
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none; 
-            -ms-overflow-style: none;  
-        }
-        .slider-container::-webkit-scrollbar { display: none; }
-
-        /* --- KATALOG (Koleksi) --- */
-        #koleksi { background: transparent; }
-        .catalog-card {
-            flex: 0 0 80%;
-            scroll-snap-align: center;
-            background: var(--bg-kartu); border-radius: var(--radius-xl); overflow: hidden;
-            box-shadow: var(--shadow-md); transition: var(--trans-halus);
-            cursor: pointer; border: 1px solid rgba(212, 175, 55, 0.15);
-        }
-        .catalog-card:hover { transform: translateY(-8px); box-shadow: 0 15px 35px rgba(212, 175, 55, 0.12); border-color: var(--emas-utama); }
-        .catalog-img { width: 100%; height: 220px; object-fit: cover; filter: brightness(0.9); transition: var(--trans-halus); }
-        .catalog-card:hover .catalog-img { filter: brightness(1.05); }
-        .catalog-info { padding: 22px; text-align: center; background: linear-gradient(to top, rgba(6, 16, 34, 0.4), transparent); }
-        .catalog-info h4 { font-size: 1.15rem; margin-bottom: 8px; color: var(--emas-pucat); font-weight: 600; }
-        .catalog-info p { font-size: 0.85rem; color: var(--emas-utama); font-weight: 600; background: rgba(212, 175, 55, 0.08); display: inline-block; padding: 5px 15px; border-radius: 20px; border: 1px solid rgba(212, 175, 55, 0.15); }
-
-        /* --- ULASAN (Review) --- */
-        #ulasan { background: transparent; }
-        .review-card { 
-            flex: 0 0 85%;
-            scroll-snap-align: center;
-            background: var(--bg-kartu); padding: 40px 30px; border-radius: var(--radius-xl); 
-            border: 1px solid rgba(212, 175, 55, 0.12); box-shadow: var(--shadow-md);
-            transition: var(--trans-halus);
-        }
-        .review-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(212, 175, 55, 0.1); border-color: var(--emas-utama); }
-        .review-card i.fa-quote-left { font-size: 2rem; color: rgba(212, 175, 55, 0.15); margin-bottom: 15px; }
-        .review-card .stars { color: var(--emas-utama); margin-bottom: 15px; font-size: 0.9rem; text-shadow: 0 0 5px rgba(212, 175, 55, 0.3); }
-        .review-text { font-size: 0.95rem; font-style: italic; color: var(--teks-terang); margin-bottom: 25px; line-height: 1.75; }
-        .reviewer-profile { display: flex; align-items: center; gap: 15px; border-top: 1px solid rgba(212, 175, 55, 0.15); padding-top: 15px; }
-        .reviewer-avatar { width: 45px; height: 45px; border-radius: 50%; background: rgba(212, 175, 55, 0.1); color: var(--emas-utama); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1.2rem; border: 1px solid rgba(212, 175, 55, 0.2); }
-        .reviewer-info h5 { font-weight: 600; color: var(--emas-pucat); font-size: 0.95rem; }
-        .reviewer-info span { font-size: 0.75rem; color: var(--emas-utama); font-weight: 500; }
-
-        /* --- FORMULIR PEMESANAN (Order) --- */
-        #order { background: transparent; position: relative; }
-        .form-box { 
-            background: var(--bg-kartu); padding: 50px 30px; 
-            border-radius: var(--radius-xl); box-shadow: var(--shadow-md); 
-            max-width: 900px; margin: 0 auto; 
-            border: 1px solid rgba(212, 175, 55, 0.15);
-        }
-        .form-box h2 { font-size: 2.2rem; text-align: center; margin-bottom: 35px; font-weight: 700; color: var(--emas-pucat); }
-        .form-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; font-weight: 500; font-size: 0.85rem; color: var(--emas-utama); letter-spacing: 0.5px; }
-        .form-group input, .form-group select, .form-group textarea {
-            width: 100%; padding: 16px 20px; border: 1.5px solid rgba(212, 175, 55, 0.15); 
-            border-radius: var(--radius-md); background: var(--bg-utama); 
-            font-size: 0.95rem; font-family: 'Poppins', sans-serif; 
-            color: var(--teks-terang); transition: var(--trans-halus);
-        }
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { 
-            outline: none; border-color: var(--emas-utama); background: var(--bg-kartu); 
-            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.15);
-        }
-        /* Style opsi select */
-        .form-group select option {
-            background: var(--bg-kartu);
-            color: var(--teks-terang);
-        }
-
-        .btn-kirim { 
-            width: 100%; background: var(--emas-utama); color: var(--bg-utama); 
-            padding: 18px; border: none; border-radius: var(--radius-bulat); 
-            font-size: 1rem; font-weight: 700; text-transform: uppercase; 
-            letter-spacing: 1.5px; cursor: pointer; margin-top: 35px; 
-            display: flex; justify-content: center; align-items: center; gap: 10px;
-            transition: var(--trans-halus); font-family: 'Poppins', sans-serif;
-            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.2);
-        }
-        .btn-kirim:hover { background: var(--emas-pucat); transform: translateY(-3px); box-shadow: 0 12px 30px rgba(212, 175, 55, 0.35); }
-
-        /* --- BANTUAN & FOOTER (Contact) --- */
-        #contact { background: transparent; text-align: center; }
-        .contact-box { background: var(--bg-kartu); padding: 50px; border-radius: var(--radius-xl); border: 1px dashed var(--emas-utama); box-shadow: var(--shadow-md); }
-        #contact h3 { font-size: 1.8rem; margin-bottom: 10px; color: var(--emas-pucat); }
-        #contact p { font-size: 0.95rem; color: var(--teks-pudar); margin-bottom: 25px; }
-        .btn-wa-tanya {
-            display: inline-flex; align-items: center; gap: 10px;
-            background: #25D366; 
-            color: var(--putih); padding: 15px 35px; border-radius: var(--radius-bulat); 
-            text-decoration: none; font-weight: 600; font-size: 1rem; box-shadow: 0 8px 20px rgba(37, 211, 102, 0.2);
-            transition: var(--trans-halus);
-        }
-        .btn-wa-tanya:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(37, 211, 102, 0.35); background: #22c35e; }
-
-        footer { text-align: center; padding: 40px 20px; background: #030812; color: var(--teks-pudar); border-top: 1px solid rgba(212, 175, 55, 0.1); }
-        .footer-logo { font-family: 'Playfair Display', serif; font-size: 2rem; font-style: italic; margin-bottom: 15px; color: var(--emas-utama); }
-        footer p { font-size: 0.85rem; opacity: 0.6; font-weight: 300; }
-
-        /* --- TOAST & ANIMASI REVEAL --- */
-        .toast-notification {
-            position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
-            background: var(--bg-kartu); color: var(--emas-pucat); border: 1px solid var(--emas-utama); border-bottom: 4px solid var(--emas-utama);
-            padding: 15px 25px; border-radius: var(--radius-md);
-            display: flex; align-items: center; gap: 12px;
-            box-shadow: var(--shadow-md); z-index: 9999;
-            font-size: 0.95rem; font-weight: 500;
-            transition: top 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-        .toast-notification.show { top: 30px; }
-
-        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
-        .reveal.active { opacity: 1; transform: translateY(0); }
-
-        /* --- RESPONSIVE MOBILE & DESKTOP --- */
-        @media (max-width: 768px) {
-            .hamburger { display: flex; }
-            
-            /* Rombak Total Sistem Menu Mobile agar estetik dan clean */
-            .nav-menu {
-                position: absolute; 
-                top: 100%; 
-                left: 0; 
-                flex-direction: column; 
-                background: rgba(6, 16, 34, 0.98); 
-                backdrop-filter: blur(15px);
-                width: 100%; 
-                text-align: left; 
-                box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
-                border-bottom: 3px solid var(--emas-utama);
-                padding: 0; 
-                gap: 0;
-                
-                /* Efek transisi buka-tutup slide down premium */
-                max-height: 0;
-                opacity: 0;
-                overflow: hidden;
-                pointer-events: none;
-                transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
-            }
-            .nav-menu.active { 
-                max-height: 350px; 
-                opacity: 1;
-                pointer-events: auto;
-                padding: 10px 0;
-            }
-            .nav-menu li { 
-                width: 100%;
-                margin: 0; 
-            }
-            .nav-menu li a { 
-                font-size: 0.95rem; 
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                padding: 14px 24px; 
-                color: var(--teks-terang);
-                border-bottom: 1px solid rgba(212, 175, 55, 0.1);
-                font-weight: 600;
-                transition: var(--trans-cepat);
-            }
-            /* Hilangkan border bawah di menu terakhir */
-            .nav-menu li:last-child a {
-                border-bottom: none;
-            }
-            /* Efek hover geser estetik di HP */
-            .nav-menu li a:active, .nav-menu li a:hover {
-                background: var(--bg-kartu);
-                color: var(--emas-utama);
-                padding-left: 30px; 
-            }
-            /* Tambah panah chevron di kanan menu list */
-            .nav-menu li a::after {
-                content: '\f105'; 
-                font-family: 'Font Awesome 6 Free';
-                font-weight: 900;
-                font-size: 0.85rem;
-                color: var(--emas-utama);
-                transition: var(--trans-cepat);
-            }
-            .nav-menu li a:active::after, .nav-menu li a:hover::after {
-                transform: translateX(3px);
-            }
-            
-            /* Penyesuaian konten lain di layar HP */
-            section { padding: 55px 5%; } 
-            .section-title { font-size: 1.8rem; margin-bottom: 5px; }
-            .section-subtitle { font-size: 0.85rem; margin-bottom: 25px; }
-            
-            /* Tinggi Hero Full Screen di HP (Konsisten!) */
-            .hero { 
-                height: 100vh; 
-                height: 100dvh; /* Menjamin True Full Screen di HP */
-            } 
-            .hero-content h1 { font-size: 2.2rem; margin-bottom: 10px; }
-            .hero-content p { font-size: 0.85rem; margin-bottom: 15px; letter-spacing: 2px; }
-            .btn-hero { padding: 10px 25px; font-size: 0.9rem; }
-            
-            .catalog-img { height: 180px; } /* Gambar dikurangi tingginya */
-            .catalog-info { padding: 15px; }
-            
-            .review-card { padding: 25px 20px; }
-            .review-text { font-size: 0.9rem; margin-bottom: 20px; }
-            
-            .form-box { padding: 35px 20px; border-radius: 15px; }
-            .form-box h2 { font-size: 1.8rem; margin-bottom: 25px; }
-            .form-group input, .form-group select, .form-group textarea { padding: 12px 15px; font-size: 0.9rem; }
-            .btn-kirim { padding: 15px; font-size: 0.9rem; margin-top: 25px; }
-            
-            .contact-box { padding: 35px 20px; }
-            #contact h3 { font-size: 1.5rem; }
-            #contact p { font-size: 0.85rem; }
-            .btn-wa-tanya { padding: 12px 25px; font-size: 0.9rem; }
-            
-            footer { padding: 30px 15px; }
-            .footer-logo { font-size: 1.5rem; }
-        }
-
-        @media (min-width: 769px) {
-            nav { padding: 20px 8%; }
-            /* Desktop Layout: menyesuaikan lebar kartu di dalam slider horizontal */
-            .catalog-card { flex: 0 0 calc(25% - 20px); scroll-snap-align: start; }
-            .review-card { flex: 0 0 calc(33.333% - 20px); scroll-snap-align: start; }
-            
-            .form-grid { grid-template-columns: 1fr 1fr; }
-            .full { grid-column: span 2; }
-            .form-box { padding: 60px; }
-            .btn-kirim { width: 50%; margin: 35px auto 0; }
-            .contact-box { max-width: 700px; margin: 0 auto; }
+        .animate-float {
+            animation: floatUpDown 2.5s ease-in-out infinite;
         }
     </style>
 </head>
-<body>
+<body class="text-black font-inter min-h-screen flex flex-col relative selection:bg-black selection:text-white pb-36 sm:pb-32">
 
-    <!-- Animasi Glow Lembut (Aesthetic Ambient) -->
-    <div class="ambient-glow"></div>
-    <div class="ambient-glow-2"></div>
-
-    <!-- Container untuk Partikel Emas Melayang -->
-    <div class="bg-particles" id="particles-container"></div>
-
-    <!-- Toast Error Notification -->
-    <div id="toast" class="toast-notification">
-        <i class="fas fa-exclamation-circle" style="color: var(--emas-utama);"></i>
-        <span id="toast-msg">Pesan error disini</span>
+    <div id="splashScreen" class="fixed inset-0 bg-black text-white z-[120] flex flex-col items-center justify-center p-4 transition-all duration-700">
+        <div class="flex flex-col items-center text-center max-w-sm w-full animate-fade-in-up">
+            <div class="w-16 h-16 bg-white text-black rounded-2xl flex items-center justify-center mb-6 shadow-2xl transform animate-bounce">
+                <i class="ph-fill ph-file-pdf text-3xl"></i>
+            </div>
+            <h2 class="font-playfair text-2xl sm:text-3xl font-bold tracking-tight mb-2">PDF Studio Pro</h2>
+            <p id="splashStatus" class="text-xs sm:text-sm text-gray-400 font-medium mb-6 h-5">Menginisialisasi sistem multi-platform...</p>
+            
+            <div class="w-48 bg-white/10 rounded-full h-1 overflow-hidden">
+                <div id="splashProgressBar" class="bg-white h-1 rounded-full transition-all duration-300 ease-out" style="width: 0%"></div>
+            </div>
+        </div>
     </div>
 
-    <!-- NAVBAR (Baru) -->
-    <nav id="navbar">
-        <a href="#home" class="logo">Nouwr's.</a>
-        <ul class="nav-menu">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#koleksi">Koleksi</a></li>
-            <li><a href="#ulasan">Ulasan</a></li>
-            <li><a href="#order">Order</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-        <div class="hamburger">
-            <i class="fas fa-bars"></i>
+    <div id="welcomeModal" class="fixed inset-0 bg-black/70 backdrop-blur-xl z-[110] flex items-center justify-center p-4 transition-all duration-500 opacity-0 pointer-events-none">
+        <div class="bg-white/95 backdrop-blur-2xl rounded-3xl max-w-lg w-full p-6 sm:p-10 shadow-2xl border border-black/10 transform transition-all duration-500 scale-95 flex flex-col items-center text-center relative overflow-hidden" id="welcomeModalCard">
+            <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-black via-gray-600 to-black"></div>
+            
+            <div class="w-16 h-16 bg-black text-white rounded-2xl flex items-center justify-center mb-6 shadow-xl transform hover:rotate-3 transition-transform duration-300">
+                <i class="ph-fill ph-file-pdf text-3xl"></i>
+            </div>
+            
+            <div class="inline-flex items-center gap-1.5 bg-black/5 text-black text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-3 border border-black/10">
+                <i class="ph ph-sparkle text-xs"></i>
+                <span>Universal Document Suite</span>
+            </div>
+            
+            <h2 class="font-playfair text-25px sm:text-4xl font-bold mb-3 text-dark tracking-tight">PDF Studio Professional</h2>
+            <p class="text-gray-500 text-xs sm:text-base leading-relaxed mb-6 sm:mb-8 font-medium max-w-sm">
+                Kompilasi gambar & dokumen PDF dengan standar industri. Berjalan sempurna di Mac, Windows, Linux, Android, dan iOS. 100% aman di perangkat Anda.
+            </p>
+            
+            <button id="closeWelcomeBtn" class="w-full bg-black text-white py-4 rounded-2xl font-bold text-sm tracking-wide hover:bg-gray-800 transition-all shadow-xl hover:shadow-2xl active:scale-95 flex items-center justify-center gap-3 cursor-pointer group">
+                <span>Mulai Menggunakan Studio</span>
+                <i class="ph ph-arrow-right text-lg group-hover:translate-x-1.5 transition-transform duration-300"></i>
+            </button>
+            
+            <div class="mt-6 flex flex-wrap items-center justify-center gap-3 text-[11px] text-gray-400 font-medium">
+                <span class="flex items-center gap-1"><i class="ph-fill ph-shield-check text-green-600 text-sm"></i> 100% Client-Side</span>
+                <span>•</span>
+                <span class="flex items-center gap-1"><i class="ph-fill ph-device-mobile text-blue-600 text-sm"></i> Cross-Device</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="successModal" class="fixed inset-0 bg-black/70 backdrop-blur-xl z-[115] flex items-center justify-center p-4 transition-all duration-500 opacity-0 pointer-events-none">
+        <div class="bg-white/95 backdrop-blur-2xl rounded-3xl max-w-lg w-full p-6 sm:p-10 shadow-2xl border border-black/10 transform transition-all duration-500 scale-95 flex flex-col items-center text-center relative overflow-hidden" id="successModalCard">
+            <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-green-600 via-black to-green-600"></div>
+            
+            <div class="w-16 h-16 bg-green-600 text-white rounded-2xl flex items-center justify-center mb-6 shadow-xl transform animate-bounce">
+                <i class="ph-fill ph-check-circle text-3xl"></i>
+            </div>
+            
+            <div class="inline-flex items-center gap-1.5 bg-green-50 text-green-700 text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-3 border border-green-200">
+                <i class="ph ph-seal-check text-xs"></i>
+                <span>Komplikasi Selesai</span>
+            </div>
+            
+            <h2 class="font-playfair text-25px sm:text-4xl font-bold mb-3 text-dark tracking-tight">PDF Anda Siap!</h2>
+            <p class="text-gray-500 text-xs sm:text-base leading-relaxed mb-6 font-medium max-w-sm">
+                Terima kasih telah menggunakan PDF Studio. Dokumen Anda telah berhasil digabungkan dengan aman dan optimal.
+            </p>
+
+            <div class="bg-gray-50 border border-gray-200 rounded-2xl p-4 w-full mb-6 text-left flex flex-col gap-2">
+                <div class="flex items-center gap-2 text-xs font-semibold text-dark">
+                    <i class="ph ph-info text-base text-black"></i>
+                    <span>Petunjuk Unduhan:</span>
+                </div>
+                <p class="text-[11px] text-gray-500 leading-relaxed">
+                    Ketuk tombol di bawah untuk mengunduh file ke perangkat Anda. Pengguna iOS/Safari dapat mengetuk tombol "Bagikan" lalu pilih <span class="text-black font-semibold">"Simpan ke File"</span>.
+                </p>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row gap-3 w-full">
+                <button id="downloadFinalBtn" class="flex-grow bg-black text-white py-4 rounded-2xl font-bold text-sm tracking-wide hover:bg-gray-800 transition-all shadow-xl hover:shadow-2xl active:scale-95 flex items-center justify-center gap-3 cursor-pointer group">
+                    <i class="ph ph-download-simple text-lg group-hover:translate-y-0.5 transition-transform"></i>
+                    <span>Unduh PDF Sekarang</span>
+                </button>
+                <button id="closeSuccessBtn" class="bg-gray-100 hover:bg-gray-200 text-dark py-4 px-6 rounded-2xl font-bold text-sm transition-all cursor-pointer">
+                    Tutup
+                </button>
+            </div>
+            
+            <div class="mt-6 flex items-center justify-center gap-2 text-[11px] text-gray-400 font-medium">
+                <i class="ph-fill ph-heart text-red-500"></i> Dibuat untuk produktivitas Anda
+            </div>
+        </div>
+    </div>
+
+    <div id="toastContainer" class="fixed top-20 left-1/2 transform -translate-x-1/2 z-[100] flex flex-col gap-2 w-full max-w-sm px-4 pointer-events-none"></div>
+
+    <nav class="fixed top-0 left-0 right-0 glass-panel z-40 border-b border-gray-200">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-black text-white flex items-center justify-center rounded-md shadow-sm">
+                    <i class="ph-fill ph-file-pdf text-xl"></i>
+                </div>
+                <span class="font-playfair font-bold text-lg sm:text-xl tracking-wide">PDF Studio</span>
+                <span class="bg-black/5 text-black text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider ml-1 sm:ml-2 border border-black/10">Pro</span>
+            </div>
+            <div class="hidden sm:flex items-center gap-6 text-sm font-medium text-gray-500">
+                <span class="text-xs text-gray-400 font-mono">v2.5 Universal Engine</span>
+            </div>
         </div>
     </nav>
 
-    <!-- HERO SECTION (ID: home) -->
-    <section id="home" class="hero" style="padding: 0;">
-        <div class="slider-wrapper">
-            <div class="slide" style="background-image: url('https://i.pinimg.com/1200x/49/4d/0d/494d0d350688fa09a6dd2143d1ab7dc0.jpg');"></div>
-            <div class="slide" style="background-image: url('https://i.pinimg.com/1200x/c7/a6/bb/c7a6bbb09373a8d8f021e54783ea411d.jpg');"></div>
-            <div class="slide" style="background-image: url('https://i.pinimg.com/736x/c8/e1/15/c8e1154915654a9726b2379d184ecc9b.jpg');"></div>
-        </div>
-        <div class="hero-content">
-            <p>Rangkaian Kasih, Sentuhan Elegan</p>
-            <h1>Spesial Untuk<br>Momen Terbaikmu</h1>
-            <a href="#order" class="btn-hero">Pesan Sekarang</a>
-        </div>
-    </section>
-
-    <!-- KATALOG (ID: koleksi) -->
-    <section id="koleksi">
-        <h2 class="section-title reveal">Koleksi Terfavorit</h2>
-        <p class="section-subtitle reveal">Pilih buket yang paling pas untuk mengekspresikan perasaanmu.</p>
+    <main class="flex-grow flex flex-col items-center w-full max-w-5xl mx-auto px-4 sm:px-6 pt-24 sm:pt-32">
         
-        <!-- Wadah slider baru untuk katalog -->
-        <div class="slider-container" id="katalog-slider">
-            <div class="catalog-card reveal">
-                <img src="foto2.png?auto=format&fit=crop&w=500&q=80" alt="Buket Bunga" class="catalog-img">
-                <div class="catalog-info">
-                    <h4>Buket Bunga</h4>
-                    <p>Bebas Request</p>
-                </div>
+        <header class="w-full text-center mb-8 sm:mb-10">
+            <h1 class="font-playfair text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-3 sm:mb-4 text-dark">Kompilasi Dokumen</h1>
+            <p class="text-gray-500 font-medium text-xs sm:text-sm md:text-base max-w-xl mx-auto leading-relaxed px-2">
+                Gabungkan berbagai format gambar dan dokumen menjadi satu file PDF profesional. 
+                <span class="text-black font-semibold">Mendukung semua perangkat & browser</span>.
+            </p>
+        </header>
+
+        <!-- Hidden Universal File Input -->
+        <input type="file" id="fileInput" multiple accept="image/jpeg, image/png, image/webp, application/pdf" class="hidden">
+
+        <div id="dropzone" class="w-full bg-white border-2 border-dashed border-gray-300 hover:border-black hover:shadow-lg transition-all duration-300 rounded-2xl flex flex-col items-center justify-center p-6 sm:p-12 cursor-pointer group shadow-sm">
+            <div class="w-14 h-14 sm:w-16 sm:h-16 bg-gray-50 rounded-full flex items-center justify-center group-hover:bg-black group-hover:text-white transition-colors duration-300 mb-3 sm:mb-4 border border-gray-100 group-hover:border-black animate-float">
+                <i class="ph ph-upload-simple text-2xl sm:text-3xl text-gray-400 group-hover:text-white transition-transform duration-300 group-hover:scale-110"></i>
             </div>
-            <div class="catalog-card reveal">
-                <img src="foto5.png?auto=format&fit=crop&w=500&q=80" alt="Buket Snack" class="catalog-img">
-                <div class="catalog-info">
-                    <h4>Buket Snack Lucu</h4>
-                    <p>Request Isi</p>
-                </div>
-            </div>
-            <div class="catalog-card reveal">
-                <img src="foto4.png?auto=format&fit=crop&w=500&q=80" alt="Buket Uang" class="catalog-img">
-                <div class="catalog-info">
-                    <h4>Money Bouquet</h4>
-                    <p>Bisa Request Nominal</p>
-                </div>
-            </div>
-            <div class="catalog-card reveal">
-                <img src="foto1.png?auto=format&fit=crop&w=500&q=80" alt="Buket Custom" class="catalog-img">
-                <div class="catalog-info">
-                    <h4>Buket Logam Mulia</h4>
-                    <p>Include Aksesoris</p>
-                </div>
+            <p class="font-semibold text-base sm:text-lg text-dark group-hover:-translate-y-1 transition-transform duration-300 text-center">Tarik atau sentuh file di sini</p>
+            <p class="text-xs sm:text-sm text-gray-500 mt-1 mb-4 text-center group-hover:-translate-y-1 transition-transform duration-300">untuk <span class="text-black underline decoration-2 underline-offset-4 font-semibold hover:text-gray-700 transition-colors">Pilih dari Perangkat</span></p>
+            
+            <div class="flex gap-2">
+                <span class="text-[10px] sm:text-[11px] font-medium text-gray-500 bg-gray-100 py-1 px-2 rounded-md">JPG, PNG, WEBP</span>
+                <span class="text-[10px] sm:text-[11px] font-medium text-gray-500 bg-gray-100 py-1 px-2 rounded-md">PDF</span>
             </div>
         </div>
-    </section>
 
-    <!-- ULASAN (ID: ulasan) -->
-    <section id="ulasan">
-        <h2 class="section-title reveal">Cerita Mereka</h2>
-        <p class="section-subtitle reveal">Ratusan pelanggan telah mempercayakan momen mereka pada kami.</p>
-        
-        <!-- Wadah slider baru untuk ulasan -->
-        <div class="slider-container" id="ulasan-slider">
-            <div class="review-card reveal">
-                <i class="fas fa-quote-left"></i>
-                <div class="stars">
-                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                </div>
-                <p class="review-text">"Suka banget sama warnanya, birunya bener-bener nyala! Adminnya super responsif dan sabar ngeladenin request custom."</p>
-                <div class="reviewer-profile">
-                    <div class="reviewer-avatar">R</div>
-                    <div class="reviewer-info">
-                        <h5>Rina Mulyani</h5>
-                        <span>Buket Wisuda</span>
+        <div id="actionToolbar" class="w-full mt-8 sm:mt-12 hidden opacity-0 transition-opacity duration-500 bg-white p-4 sm:p-6 rounded-2xl border border-gray-200 shadow-sm flex flex-col gap-4">
+            
+            <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+                <div class="flex items-center gap-2">
+                    <div class="p-2 bg-gray-100 rounded-lg text-black">
+                        <i class="ph ph-sliders-horizontal text-lg"></i>
+                    </div>
+                    <div>
+                        <h2 class="font-semibold text-sm text-dark">Pengaturan Dokumen PDF</h2>
+                        <p class="text-[11px] text-gray-500">Format & orientasi diterapkan otomatis</p>
                     </div>
                 </div>
-            </div>
-            <div class="review-card reveal">
-                <i class="fas fa-quote-left"></i>
-                <div class="stars">
-                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
-                </div>
-                <p class="review-text">"Pesan dadakan buat anniversary, untung bisa dibantu proses cepat. Wrappingnya rapi dan wanginya enak banget. Istri saya seneng parah!"</p>
-                <div class="reviewer-profile">
-                    <div class="reviewer-avatar">A</div>
-                    <div class="reviewer-info">
-                        <h5>Andri S.</h5>
-                        <span>Buket Bunga L</span>
-                    </div>
-                </div>
-            </div>
-            <div class="review-card reveal">
-                <i class="fas fa-quote-left"></i>
-                <div class="stars">
-                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                </div>
-                <p class="review-text">"Buket snacknya padet, nggak pelit isi. Harganya juga bersahabat buat kantong mahasiswa. Next time pasti order kesini lagi."</p>
-                <div class="reviewer-profile">
-                    <div class="reviewer-avatar">D</div>
-                    <div class="reviewer-info">
-                        <h5>Dinda K.</h5>
-                        <span>Buket Snack</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FORM (ID: order) -->
-    <section id="order">
-        <div class="form-box reveal">
-            <h2>Pesan Buket Anda</h2>
-            <form id="orderForm" onsubmit="event.preventDefault();">
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label>Nama Lengkap Anda</label>
-                        <input type="text" id="nama" placeholder="Cth: Nabila Putri" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Ingin Pesan Buket Apa?</label>
-                        <select id="tipe" required>
-                            <option value="" disabled selected>-- Pilih Jenis --</option>
-                            <option value="Buket Bunga">Buket Bunga (Kawat Bulu)</option>
-                            <option value="Buket Snack">Buket Snack</option>
-                            <option value="Buket Uang">Buket Uang (Money Bouquet)</option>
-                            <option value="Buket Wisuda">Buket Wisuda</option>
-                            <option value="Buket Logam Mulia">Buket Logam Mulia</option>
-                            <option value="Buket Custom">Buket Custom Lainnya</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Pilih Ukuran</label>
-                        <select id="ukuran" required>
-                            <option value="" disabled selected>-- Pilih Ukuran --</option>
-                            <option value="Single Buket">Single (Kecil)</option>
-                            <option value="Small (S)">Small</option>
-                            <option value="Medium (M)">Medium (Standar)</option>
-                            <option value="Large (L)">Large (Besar)</option>
-                            <option value="Extra Large (XL)">Extra Large (Jumbo)</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Tanggal Diperlukan</label>
-                        <input type="date" id="tgl" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Batas Budget (Opsional)</label>
-                        <input type="number" id="budget" placeholder="Cth: 150000">
-                    </div>
-                    <div class="form-group full">
-                        <label>Request Khusus (Warna / Tema / Isi Kartu)</label>
-                        <textarea id="catatan" rows="3" placeholder="Contoh: Nuansa kertas wrapping warna biru dan emas, tolong tulis di kartu: 'Happy Graduation ya!'"></textarea>
-                    </div>
-                </div>
-                <button type="button" onclick="kirimWhatsApp()" class="btn-kirim">
-                    Order <i class="fab fa-whatsapp" style="font-size: 1.2rem;"></i>
+                
+                <button id="clearAllBtn" class="text-xs sm:text-sm font-semibold text-gray-400 hover:text-red-600 transition-colors flex items-center gap-1 bg-gray-50 hover:bg-red-50 px-3 py-2 rounded-lg border border-gray-100 hover:border-red-200 justify-center">
+                    <i class="ph ph-trash"></i> <span class="hidden sm:inline">Hapus Semua</span><span class="sm:hidden">Reset</span>
                 </button>
-            </form>
-        </div>
-    </section>
+            </div>
 
-    <!-- CONTACT (ID: contact) -->
-    <section id="contact">
-        <div class="contact-box reveal">
-            <h3 class="serif-font">Butuh Inspirasi Desain?</h3>
-            <p>Jangan ragu untuk bertanya! Tim kami siap membantu mencocokkan ide buket dengan budget yang Anda miliki secara gratis.</p>
-            <a href="https://wa.me/6285217382062?text=Halo%20Nouwr's,%20saya%20mau%20konsultasi%20untuk%20pemesanan%20buket..." target="_blank" class="btn-wa-tanya">
-                <i class="fab fa-whatsapp"></i> Chat Admin Sekarang
-            </a>
-        </div>
-    </section>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full">
+                <div class="flex flex-col gap-1">
+                    <label class="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Ukuran Kertas</label>
+                    <select id="paperSize" class="text-sm bg-gray-50 border border-gray-200 rounded-xl px-3 py-3 sm:py-2 focus:outline-none focus:ring-1 focus:ring-black focus:border-black cursor-pointer font-medium w-full">
+                        <option value="A4">A4 (Standar Internasional)</option>
+                        <option value="LETTER">US Letter</option>
+                    </select>
+                </div>
+                
+                <div class="flex flex-col gap-1">
+                    <label class="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Orientasi Halaman</label>
+                    <select id="orientation" class="text-sm bg-gray-50 border border-gray-200 rounded-xl px-3 py-3 sm:py-2 focus:outline-none focus:ring-1 focus:ring-black focus:border-black cursor-pointer font-medium w-full">
+                        <option value="PORTRAIT">Potret (Berdiri)</option>
+                        <option value="LANDSCAPE">Lanskap (Tidur)</option>
+                    </select>
+                </div>
 
-    <footer>
-        <div class="footer-logo">Nouwr's.</div>
-        <p>&copy; 2026 Nouwr's Handmade.<br>Serang, Banten, Indonesia.</p>
-    </footer>
+                <div class="flex flex-col gap-1">
+                    <label class="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Margin Tepi</label>
+                    <select id="marginSize" class="text-sm bg-gray-50 border border-gray-200 rounded-xl px-3 py-3 sm:py-2 focus:outline-none focus:ring-1 focus:ring-black focus:border-black cursor-pointer font-medium w-full">
+                        <option value="STANDARD">Standar (Normal)</option>
+                        <option value="NONE">Tanpa Margin (Penuh)</option>
+                        <option value="LARGE">Lebar (Eksklusif)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-full mt-6 mb-16">
+            <div id="previewContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 empty:hidden custom-scrollbar"></div>
+        </div>
+
+    </main>
+
+    <div id="floatingActionBar" class="fixed bottom-0 left-0 right-0 glass-panel border-t border-gray-200 p-4 sm:p-5 transform translate-y-full transition-transform duration-500 ease-out z-40 shadow-2xl">
+        <div class="max-w-5xl mx-auto flex items-center justify-between gap-3">
+            <div class="flex flex-col">
+                <span class="text-xs sm:text-sm font-bold text-dark truncate max-w-[170px] sm:max-w-none" id="fileCountDisplay">0 Dokumen Siap</span>
+                <span class="text-[11px] text-gray-500 hidden sm:inline">Tarik / geser kartu untuk mengubah urutan halaman</span>
+                <span class="text-[10px] text-gray-400 sm:hidden">Sentuh & geser urutan</span>
+            </div>
+            
+            <button id="generateBtn" class="bg-black text-white px-6 sm:px-8 py-3.5 sm:py-3 rounded-xl font-bold tracking-wide text-xs sm:text-sm hover:bg-gray-800 hover:shadow-xl active:scale-95 transition-all focus:outline-none flex items-center justify-center gap-2 shadow-lg shrink-0 cursor-pointer">
+                <i class="ph ph-magic-wand text-base sm:text-lg"></i>
+                <span>Jadikan PDF</span>
+            </button>
+        </div>
+    </div>
+
+    <div id="loadingOverlay" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[115] hidden flex-col items-center justify-center text-white transition-opacity duration-300 opacity-0 px-4">
+        <div class="bg-white text-black p-6 sm:p-8 rounded-3xl shadow-2xl max-w-sm w-full mx-auto flex flex-col items-center text-center transform scale-95 transition-transform duration-300" id="loadingModal">
+            <div class="relative w-16 h-16 mb-6">
+                <svg class="animate-spin w-full h-full text-gray-200" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <i class="ph-fill ph-file-pdf absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl text-black"></i>
+            </div>
+            
+            <h3 class="font-playfair text-xl font-bold mb-2">Merakit PDF...</h3>
+            <p id="progressText" class="text-sm text-gray-500 mb-6 font-medium">Menyiapkan dokumen lintas perangkat...</p>
+            
+            <div class="w-full bg-gray-100 rounded-full h-2.5 overflow-hidden">
+                <div id="progressBar" class="bg-black h-2.5 rounded-full transition-all duration-300 ease-out" style="width: 0%"></div>
+            </div>
+        </div>
+    </div>
 
     <script>
-        // --- LOGIKA NAVBAR MOBILE (Hamburger Menu) ---
-        const hamburger = document.querySelector(".hamburger");
-        const navMenu = document.querySelector(".nav-menu");
-        const navLinks = document.querySelectorAll(".nav-menu li a");
+        window.addEventListener('DOMContentLoaded', () => {
+            const splashScreen = document.getElementById('splashScreen');
+            const splashStatus = document.getElementById('splashStatus');
+            const splashProgressBar = document.getElementById('splashProgressBar');
+            const welcomeModal = document.getElementById('welcomeModal');
+            const welcomeModalCard = document.getElementById('welcomeModalCard');
+            const closeWelcomeBtn = document.getElementById('closeWelcomeBtn');
 
-        hamburger.addEventListener("click", () => {
-            navMenu.classList.toggle("active");
-            if(navMenu.classList.contains("active")){
-                hamburger.innerHTML = '<i class="fas fa-times"></i>';
-            } else {
-                hamburger.innerHTML = '<i class="fas fa-bars"></i>';
-            }
-        });
+            const steps = [
+                { progress: '30%', text: 'Memuat modul kompilasi lokal...' },
+                { progress: '70%', text: 'Menyesuaikan orientasi & kanvas...' },
+                { progress: '100%', text: 'Sistem siap digunakan.' }
+            ];
 
-        navLinks.forEach(link => {
-            link.addEventListener("click", () => {
-                navMenu.classList.remove("active");
-                hamburger.innerHTML = '<i class="fas fa-bars"></i>';
-            });
-        });
-
-        // --- LOGIKA TOAST & WHATSAPP ---
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            const toastMsg = document.getElementById('toast-msg');
-            toastMsg.innerText = message;
-            toast.classList.add('show');
-            setTimeout(() => { toast.classList.remove('show'); }, 3500);
-        }
-
-        function kirimWhatsApp() {
-            const waAdmin = "6285217382062"; 
-            const n = document.getElementById('nama').value.trim();
-            const t = document.getElementById('tipe').value;
-            const u = document.getElementById('ukuran').value;
-            const d = document.getElementById('tgl').value;
-            const b = document.getElementById('budget').value;
-            const c = document.getElementById('catatan').value.trim();
-
-            if(!n || !t || !u || !d) {
-                showToast("Oops! Mohon lengkapi form ya.");
-                return;
-            }
-            
-            const teks = `*PESANAN BARU - NOUWR'S HANDMADE*%0A` +
-                         `--------------------------------%0A` +
-                         `👤 *Nama:* ${n}%0A` +
-                         `💐 *Jenis:* ${t}%0A` +
-                         `📏 *Ukuran:* ${u}%0A` +
-                         `📅 *Tgl Diperlukan:* ${d}%0A` +
-                         `💰 *Budget:* Rp ${b || 'Menyesuaikan'}%0A` +
-                         `📝 *Request:* ${c || 'Tidak ada'}%0A` +
-                         `--------------------------------%0A` +
-                         `Halo kak, tolong dibantu proses pesanannya ya. Terima kasih!`;
-
-            window.open(`https://wa.me/${waAdmin}?text=${teks}`, '_blank');
-        }
-
-        // --- FUNGSI AUTO-SCROLL UNTUK SLIDER ---
-        function startAutoScroll(containerId) {
-            const container = document.getElementById(containerId);
-            if (!container) return;
-
-            let scrollInterval;
-            
-            const scrollNext = () => {
-                const card = container.firstElementChild;
-                if (!card) return;
-                
-                const cardWidth = card.clientWidth + 20; 
-                
-                if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 10) {
-                    container.scrollTo({ left: 0, behavior: 'smooth' });
+            let currentStep = 0;
+            const interval = setInterval(() => {
+                if (currentStep < steps.length) {
+                    splashProgressBar.style.width = steps[currentStep].progress;
+                    splashStatus.innerText = steps[currentStep].text;
+                    currentStep++;
                 } else {
-                    container.scrollBy({ left: cardWidth, behavior: 'smooth' });
+                    clearInterval(interval);
+                    splashScreen.classList.add('opacity-0', 'pointer-events-none');
+                    setTimeout(() => {
+                        splashScreen.remove();
+                        welcomeModal.classList.remove('opacity-0', 'pointer-events-none');
+                        welcomeModalCard.classList.remove('scale-95');
+                        welcomeModalCard.classList.add('scale-100');
+                    }, 400);
                 }
-            };
+            }, 250);
 
-            const start = () => { scrollInterval = setInterval(scrollNext, 3000); };
-            const stop = () => { clearInterval(scrollInterval); };
+            closeWelcomeBtn.addEventListener('click', () => {
+                welcomeModal.classList.add('opacity-0');
+                welcomeModalCard.classList.remove('scale-100');
+                welcomeModalCard.classList.add('scale-95');
+                setTimeout(() => {
+                    welcomeModal.classList.add('hidden', 'pointer-events-none');
+                }, 400);
+            });
+        });
 
-            start();
-            container.addEventListener('mouseenter', stop);
-            container.addEventListener('mouseleave', start);
-            container.addEventListener('touchstart', stop, {passive: true});
-            container.addEventListener('touchend', start);
+        const dropzone = document.getElementById('dropzone');
+        const fileInput = document.getElementById('fileInput');
+        const previewContainer = document.getElementById('previewContainer');
+        const actionToolbar = document.getElementById('actionToolbar');
+        const floatingActionBar = document.getElementById('floatingActionBar');
+        const fileCountDisplay = document.getElementById('fileCountDisplay');
+        const generateBtn = document.getElementById('generateBtn');
+        const clearAllBtn = document.getElementById('clearAllBtn');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const toastContainer = document.getElementById('toastContainer');
+        
+        const successModal = document.getElementById('successModal');
+        const successModalCard = document.getElementById('successModalCard');
+        const downloadFinalBtn = document.getElementById('downloadFinalBtn');
+        const closeSuccessBtn = document.getElementById('closeSuccessBtn');
+
+        const elPaperSize = document.getElementById('paperSize');
+        const elOrientation = document.getElementById('orientation');
+        const elMarginSize = document.getElementById('marginSize');
+
+        let filesData = [];
+        let sortableInstance = null;
+        let generatedPdfBlobUrl = null;
+        let generatedPdfName = 'PDF_Studio.pdf';
+
+        function formatBytes(bytes, decimals = 1) {
+            if (!+bytes) return '0 Bytes';
+            const k = 1024;
+            const dm = decimals < 0 ? 0 : decimals;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
         }
 
-        // --- INISIALISASI SAAT HALAMAN DIMUAT ---
-        document.addEventListener('DOMContentLoaded', function() {
-            // Batasi kalender tidak bisa pilih tanggal kemarin
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('tgl').setAttribute('min', today);
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            const isError = type === 'error';
+            const bgColor = isError ? 'bg-red-50 text-red-700 border-red-200' : 'bg-black text-white border-black';
+            const icon = isError ? 'ph-warning-circle text-red-500' : 'ph-check-circle text-green-400';
+            
+            toast.className = `flex items-center gap-3 px-4 py-3 rounded-xl shadow-xl border ${bgColor} transform transition-all duration-400 translate-y-[-20px] opacity-0 pointer-events-auto`;
+            toast.innerHTML = `
+                <i class="ph-fill ${icon} text-xl"></i>
+                <span class="text-sm font-semibold">${message}</span>
+            `;
+            
+            toastContainer.appendChild(toast);
+            
+            requestAnimationFrame(() => {
+                setTimeout(() => {
+                    toast.classList.remove('translate-y-[-20px]', 'opacity-0');
+                }, 10);
+            });
 
-            // Buat efek partikel emas berjalan di latar belakang secara dinamis
-            const particlesContainer = document.getElementById('particles-container');
-            const totalParticles = window.innerWidth < 768 ? 12 : 25; // Batasi jumlah di HP biar enteng
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'scale-95', '-translate-y-4');
+                setTimeout(() => toast.remove(), 400);
+            }, 3500);
+        }
 
-            for (let i = 0; i < totalParticles; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropzone.addEventListener(eventName, preventDefaults, false);
+            document.body.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropzone.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropzone.addEventListener(eventName, unhighlight, false);
+        });
+
+        function highlight() {
+            dropzone.classList.add('border-black', 'bg-gray-50', 'shadow-md');
+        }
+
+        function unhighlight() {
+            dropzone.classList.remove('border-black', 'bg-gray-50', 'shadow-md');
+        }
+
+        dropzone.addEventListener('drop', handleDrop, false);
+        dropzone.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            handleFiles(files);
+        }
+
+        async function handleFiles(files) {
+            const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'application/pdf'];
+            let addedCount = 0;
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
                 
-                const size = Math.random() * 4 + 2; 
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
+                if (!validTypes.includes(file.type)) {
+                    showToast(`Format ditolak: ${file.name}`, 'error');
+                    continue;
+                }
+
+                const id = 'id_' + Date.now().toString() + Math.random().toString(36).substr(2, 9);
+                let thumbnailDataUrl = '';
                 
-                particle.style.left = `${Math.random() * 100}vw`;
-                
-                particle.style.animationDelay = `${Math.random() * 15}s`;
-                particle.style.animationDuration = `${Math.random() * 12 + 15}s`;
-                
-                particlesContainer.appendChild(particle);
+                if (file.type.startsWith('image/')) {
+                    thumbnailDataUrl = await readFileAsDataURL(file);
+                } else if (file.type === 'application/pdf') {
+                    thumbnailDataUrl = 'placeholder_pdf'; 
+                }
+
+                filesData.push({
+                    id: id,
+                    file: file,
+                    name: file.name,
+                    size: formatBytes(file.size),
+                    type: file.type,
+                    thumbnail: thumbnailDataUrl
+                });
+                addedCount++;
             }
 
-            // Aktifkan auto-scroll slider horizontal
-            startAutoScroll('katalog-slider');
-            startAutoScroll('ulasan-slider');
+            if (addedCount > 0) {
+                renderPreviews();
+                updateUIState();
+            }
+            
+            fileInput.value = '';
+        }
 
-            // Animasi Scroll Reveal (Muncul pelan-pelan)
-            const observerOptions = { threshold: 0.1, rootMargin: "0px 0px -20px 0px" };
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('active');
-                        observer.unobserve(entry.target); 
-                    }
-                });
-            }, observerOptions);
-
-            document.querySelectorAll('.reveal').forEach((el, index) => {
-                el.style.transitionDelay = `${(index % 3) * 0.15}s`; 
-                observer.observe(el);
+        function readFileAsDataURL(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (e) => resolve(e.target.result);
+                reader.onerror = (e) => reject(e);
+                reader.readAsDataURL(file);
             });
+        }
+
+        function updateUIState() {
+            if (filesData.length > 0) {
+                actionToolbar.classList.remove('hidden');
+                setTimeout(() => {
+                    actionToolbar.classList.remove('opacity-0');
+                }, 10);
+
+                floatingActionBar.classList.remove('translate-y-full');
+                fileCountDisplay.innerText = `${filesData.length} Dokumen Siap`;
+            } else {
+                actionToolbar.classList.add('opacity-0');
+                floatingActionBar.classList.add('translate-y-full');
+                setTimeout(() => {
+                    actionToolbar.classList.add('hidden');
+                }, 500);
+            }
+        }
+
+        function renderPreviews() {
+            previewContainer.innerHTML = '';
+            
+            filesData.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'relative aspect-[3/4] bg-white border border-gray-200 rounded-xl overflow-hidden group cursor-grab active:cursor-grabbing hover:-translate-y-1.5 hover:shadow-xl hover:border-black transition-all duration-300 flex flex-col items-center justify-center animate-fade-in-up';
+                div.dataset.id = item.id;
+                div.style.animationDelay = `${index * 50}ms`;
+
+                const imageContainer = document.createElement('div');
+                imageContainer.className = 'w-full h-full flex items-center justify-center bg-gray-50';
+
+                if (item.type === 'application/pdf') {
+                    imageContainer.innerHTML = `
+                        <div class="flex flex-col items-center text-gray-400 p-4">
+                            <i class="ph-fill ph-file-pdf text-5xl mb-2 text-red-500"></i>
+                            <span class="text-[10px] text-center truncate w-full px-2 font-medium text-gray-600">${item.name}</span>
+                        </div>
+                    `;
+                } else {
+                    imageContainer.innerHTML = `
+                        <img src="${item.thumbnail}" class="w-full h-full object-cover pointer-events-none select-none" alt="${item.name}">
+                    `;
+                }
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'absolute top-2 right-2 bg-white/90 backdrop-blur-sm text-gray-600 w-7 h-7 rounded-full flex items-center justify-center shadow-sm opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-50 hover:text-red-600 z-10 border border-gray-100';
+                deleteBtn.innerHTML = '<i class="ph ph-x text-sm font-bold"></i>';
+                deleteBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    removeItem(item.id);
+                };
+
+                const infoBar = document.createElement('div');
+                infoBar.className = 'absolute bottom-0 left-0 right-0 bg-white/90 backdrop-blur-sm border-t border-gray-100 p-2 flex justify-between items-center transform translate-y-full group-hover:translate-y-0 transition-transform duration-300';
+                
+                const typeBadge = item.type === 'application/pdf' ? 
+                    '<span class="bg-red-100 text-red-700 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase">PDF</span>' : 
+                    '<span class="bg-blue-100 text-blue-700 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase">IMG</span>';
+                
+                infoBar.innerHTML = `
+                    ${typeBadge}
+                    <span class="text-[10px] font-medium text-gray-500">${item.size}</span>
+                `;
+
+                const numBadge = document.createElement('div');
+                numBadge.className = 'absolute top-2 left-2 bg-black text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-md font-bold shadow-sm';
+                numBadge.innerText = index + 1;
+
+                div.appendChild(imageContainer);
+                div.appendChild(deleteBtn);
+                div.appendChild(infoBar);
+                div.appendChild(numBadge);
+                previewContainer.appendChild(div);
+            });
+
+            initSortable();
+        }
+
+        function removeItem(id) {
+            filesData = filesData.filter(item => item.id !== id);
+            renderPreviews();
+            updateUIState();
+        }
+
+        clearAllBtn.addEventListener('click', () => {
+            filesData = [];
+            renderPreviews();
+            updateUIState();
+        });
+
+        function initSortable() {
+            if (sortableInstance) {
+                sortableInstance.destroy();
+            }
+            sortableInstance = new Sortable(previewContainer, {
+                animation: 200,
+                ghostClass: 'sortable-ghost',
+                delay: 80,
+                delayOnTouchOnly: true,
+                touchStartThreshold: 5,
+                onEnd: function () {
+                    const newFilesData = [];
+                    const childNodes = previewContainer.childNodes;
+                    childNodes.forEach(node => {
+                        if (node.dataset && node.dataset.id) {
+                            const item = filesData.find(f => f.id === node.dataset.id);
+                            if (item) newFilesData.push(item);
+                        }
+                    });
+                    filesData = newFilesData;
+                    renderPreviews();
+                },
+            });
+        }
+
+        function normalizeImageForPDF(file) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                const objUrl = URL.createObjectURL(file);
+                
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.fillStyle = '#FFFFFF';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(img, 0, 0);
+                    
+                    const dataUrl = canvas.toDataURL('image/jpeg', 0.95);
+                    URL.revokeObjectURL(objUrl);
+                    resolve({ dataUrl, width: img.width, height: img.height });
+                };
+                img.onerror = (err) => {
+                    URL.revokeObjectURL(objUrl);
+                    reject(err);
+                };
+                img.src = objUrl;
+            });
+        }
+
+        generateBtn.addEventListener('click', async () => {
+            if (filesData.length === 0) return;
+
+            loadingOverlay.classList.remove('hidden');
+            setTimeout(() => {
+                loadingOverlay.classList.remove('opacity-0');
+                document.getElementById('loadingModal').classList.remove('scale-95');
+                document.getElementById('loadingModal').classList.add('scale-100');
+            }, 10);
+
+            const progressText = document.getElementById('progressText');
+            const progressBar = document.getElementById('progressBar');
+            progressBar.style.width = '0%';
+            progressText.innerText = 'Menganalisis file & orientasi...';
+            
+            await new Promise(r => setTimeout(r, 400));
+
+            try {
+                const { PDFDocument } = PDFLib;
+                const finalPdf = await PDFDocument.create();
+
+                const settingPaper = elPaperSize.value;
+                const settingOrientation = elOrientation.value;
+                const settingMargin = elMarginSize.value;
+
+                let PAGE_W, PAGE_H;
+                if (settingPaper === 'A4') {
+                    PAGE_W = 595.28; PAGE_H = 841.89;
+                } else {
+                    PAGE_W = 612.00; PAGE_H = 792.00;
+                }
+
+                if (settingOrientation === 'LANDSCAPE') {
+                    const temp = PAGE_W;
+                    PAGE_W = PAGE_H;
+                    PAGE_H = temp;
+                }
+
+                let MARGIN = 40;
+                if (settingMargin === 'NONE') MARGIN = 0;
+                if (settingMargin === 'LARGE') MARGIN = 80;
+
+                for (let i = 0; i < filesData.length; i++) {
+                    const item = filesData[i];
+
+                    progressText.innerText = `Memproses halaman ${i + 1} dari ${filesData.length}...`;
+                    progressBar.style.width = `${((i + 1) / filesData.length) * 100}%`;
+                    
+                    await new Promise(r => setTimeout(r, 250));
+
+                    if (item.type === 'application/pdf') {
+                        const arrayBuffer = await item.file.arrayBuffer();
+                        const loadedPdf = await PDFDocument.load(arrayBuffer);
+                        const copiedPages = await finalPdf.copyPages(loadedPdf, loadedPdf.getPageIndices());
+                        copiedPages.forEach((page) => {
+                            finalPdf.addPage(page);
+                        });
+                    } else {
+                        const normalizedData = await normalizeImageForPDF(item.file);
+                        const b64Data = normalizedData.dataUrl.split(',')[1];
+                        const imageBytes = Uint8Array.from(atob(b64Data), c => c.charCodeAt(0));
+                        
+                        const pdfImage = await finalPdf.embedJpg(imageBytes);
+                        
+                        let renderWidth = pdfImage.width;
+                        let renderHeight = pdfImage.height;
+                        
+                        const maxWidth = PAGE_W - (MARGIN * 2);
+                        const maxHeight = PAGE_H - (MARGIN * 2);
+
+                        const ratio = Math.min(maxWidth / renderWidth, maxHeight / renderHeight);
+                        renderWidth = renderWidth * ratio;
+                        renderHeight = renderHeight * ratio;
+
+                        const page = finalPdf.addPage([PAGE_W, PAGE_H]);
+                        
+                        page.drawImage(pdfImage, {
+                            x: (PAGE_W / 2) - (renderWidth / 2),
+                            y: (PAGE_H / 2) - (renderHeight / 2),
+                            width: renderWidth,
+                            height: renderHeight,
+                        });
+                    }
+                }
+
+                progressText.innerText = 'Menyelesaikan dokumen...';
+                progressBar.style.width = '100%';
+                await new Promise(r => setTimeout(r, 400));
+
+                const pdfBytes = await finalPdf.save();
+                const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+                
+                if (generatedPdfBlobUrl) {
+                    URL.revokeObjectURL(generatedPdfBlobUrl);
+                }
+                generatedPdfBlobUrl = URL.createObjectURL(blob);
+                generatedPdfName = `PDF_Studio_${Date.now()}.pdf`;
+
+                loadingOverlay.classList.add('opacity-0');
+                document.getElementById('loadingModal').classList.remove('scale-100');
+                document.getElementById('loadingModal').classList.add('scale-95');
+                setTimeout(() => {
+                    loadingOverlay.classList.add('hidden');
+                    
+                    successModal.classList.remove('opacity-0', 'pointer-events-none');
+                    successModalCard.classList.remove('scale-95');
+                    successModalCard.classList.add('scale-100');
+                }, 300);
+
+            } catch (error) {
+                console.error("PDF Generation Error:", error);
+                showToast('Gagal memproses dokumen. Periksa kembali file Anda.', 'error');
+                loadingOverlay.classList.add('opacity-0');
+                document.getElementById('loadingModal').classList.remove('scale-100');
+                document.getElementById('loadingModal').classList.add('scale-95');
+                setTimeout(() => {
+                    loadingOverlay.classList.add('hidden');
+                }, 300);
+            }
+        });
+
+        downloadFinalBtn.addEventListener('click', () => {
+            if (!generatedPdfBlobUrl) return;
+
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+            if (isIOS) {
+                window.open(generatedPdfBlobUrl, '_blank');
+                showToast('PDF terbuka di tab baru. Ketuk tombol Bagikan lalu "Simpan ke File".');
+            } else {
+                const a = document.createElement('a');
+                a.href = generatedPdfBlobUrl;
+                a.download = generatedPdfName;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                showToast('Sukses! PDF Anda berhasil diunduh.');
+            }
+        });
+
+        closeSuccessBtn.addEventListener('click', () => {
+            successModal.classList.add('opacity-0');
+            successModalCard.classList.remove('scale-100');
+            successModalCard.classList.add('scale-95');
+            setTimeout(() => {
+                successModal.classList.add('hidden', 'pointer-events-none');
+            }, 400);
         });
     </script>
 </body>
-</html>	
+</html>
