@@ -4,12 +4,153 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BIOMA'HAD SMART - Pengolahan Limbah & Bioenergi IoT</title>
+    
+    <!-- Google Font: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css" />
+    <script>
+      // Konfigurasi Warna Tailwind CDN via JS
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              emerald: {
+                50: "#f0fdf4",
+                100: "#dcfce7",
+                200: "#bbf7d0",
+                600: "#059669",
+                700: "#047857",
+                800: "#065f46",
+                900: "#064e3b",
+                950: "#022c22",
+              },
+            },
+          },
+        },
+      };
+    </script>
+
     <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Embedded Custom CSS -->
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "Plus Jakarta Sans", sans-serif;
+      }
+
+      /* Hero Section Background Fallback & Styling */
+      .hero-bg-overlay {
+        background-image: url("assets/Hero.webp");
+        background-size: cover;
+        background-position: 65% center;
+        background-repeat: no-repeat;
+      }
+
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #022c22;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #059669;
+        border-radius: 4px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #10b981;
+      }
+
+      /* ANIMASI FUTURISTIK MEWAH */
+      @keyframes glowPulse {
+        0%, 100% {
+          box-shadow: 0 0 20px rgba(16, 185, 129, 0.35), 0 0 40px rgba(16, 185, 129, 0.15);
+        }
+        50% {
+          box-shadow: 0 0 30px rgba(16, 185, 129, 0.65), 0 0 60px rgba(16, 185, 129, 0.3);
+        }
+      }
+
+      @keyframes shimmer {
+        0% { transform: translateX(-150%) rotate(25deg); }
+        100% { transform: translateX(150%) rotate(25deg); }
+      }
+
+      @keyframes floatSlow {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-8px) rotate(0.5deg); }
+      }
+
+      .btn-glow {
+        animation: glowPulse 3s infinite ease-in-out;
+      }
+
+      .hero-title-gradient {
+        background: linear-gradient(135deg, #ffffff 0%, #a7f3d0 60%, #34d399 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .shimmer-effect {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .shimmer-effect::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+          60deg,
+          transparent 30%,
+          rgba(255, 255, 255, 0.25) 50%,
+          transparent 70%
+        );
+        transform: rotate(25deg);
+        animation: shimmer 4s infinite linear;
+      }
+
+      /* Modal Animation */
+      .modal-backdrop {
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+      }
+      .modal-backdrop.hidden-modal {
+        opacity: 0;
+        pointer-events: none;
+        visibility: hidden;
+      }
+      .modal-backdrop.active-modal {
+        opacity: 1;
+        pointer-events: auto;
+        visibility: visible;
+      }
+      .modal-content {
+        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+      }
+      .modal-backdrop.hidden-modal .modal-content {
+        transform: scale(0.9) translateY(20px);
+        opacity: 0;
+      }
+      .modal-backdrop.active-modal .modal-content {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+      }
+    </style>
   </head>
   <body class="bg-white text-slate-800 antialiased">
     <!-- TOP MINI BAR -->
@@ -17,13 +158,10 @@
       class="bg-emerald-900 text-white text-xs py-2 px-4 sm:px-8 flex justify-between items-center border-b border-emerald-800"
     >
       <div class="flex items-center gap-6">
-        <span class="hidden sm:flex items-center gap-1.5"
-          ><i
-            data-lucide="graduation-cap"
-            class="w-3.5 h-3.5 text-emerald-400"
-          ></i>
-          UIN Sultan Maulana Hasanuddin Banten</span
-        >
+        <span class="hidden sm:flex items-center gap-1.5">
+          <i data-lucide="graduation-cap" class="w-3.5 h-3.5 text-emerald-400"></i>
+          UIN Sultan Maulana Hasanuddin Banten
+        </span>
       </div>
       <div class="font-semibold text-emerald-300">OASE PTKIN III 2026</div>
     </div>
@@ -35,12 +173,13 @@
       <div
         class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between"
       >
-        <!-- BRAND LOGO (Ganti Icon dengan File Logo Gambar) -->
+        <!-- BRAND LOGO -->
         <div class="flex items-center gap-3">
           <img
             src="assets/Logo.png"
             alt="Logo BIOMA'HAD SMART"
             class="h-12 w-auto object-contain"
+            onerror="this.onerror=null; this.src='https://placehold.co/200x80/022c22/ffffff?text=BIOMA%27HAD';"
           />
           <div>
             <span
@@ -83,31 +222,116 @@
 
     <!-- HERO BANNER -->
     <section
-      class="relative flex min-h-[560px] md:min-h-[620px] lg:min-h-[680px] items-center bg-emerald-950 text-white py-16 md:py-20 overflow-hidden"
+      class="relative flex min-h-[580px] md:min-h-[640px] lg:min-h-[700px] items-center bg-emerald-950 text-white py-16 md:py-20 overflow-hidden"
     >
-      <!-- Gambar Background + Layer Filter Kontras -->
+      <!-- Gambar Background -->
       <div class="hero-bg-overlay absolute inset-0"></div>
 
-      <!-- Overlay Dark Gradient (Agar Teks Tetap Mudah Dibaca) -->
+      <!-- Futuristic Tech Grid & Glow Overlay -->
       <div
-        class="absolute inset-0 bg-gradient-to-r from-emerald-950/95 via-emerald-950/75 to-emerald-950/10"
+        class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-500/20 via-emerald-950/80 to-emerald-950/95"
       ></div>
 
       <!-- Konten Teks Hero -->
       <div
-        class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4"
+        class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6"
       >
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-400/30 backdrop-blur-md text-emerald-300 text-xs font-semibold">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+          <span>Inovasi Terbarukan OASE PTKIN III</span>
+        </div>
+
         <h1
-          class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight max-w-3xl"
+          class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight max-w-3xl hero-title-gradient"
         >
           Menjadikan Sampah Organik Menjadi Solusi Energi
         </h1>
-        <p class="text-slate-300 text-sm sm:text-base max-w-xl">
+        <p class="text-slate-300 text-sm sm:text-base max-w-xl leading-relaxed">
           Pengembangan Prototipe Biodigester Berbasis IoT untuk Mendukung
           Kemandirian Energi Ma'had Melalui Circular Economy.
         </p>
+
+        <!-- TOMBOL AKSI FUTURISTIK (KTI & POSTER) -->
+        <div class="pt-4 flex flex-wrap items-center gap-4">
+          <!-- Tombol Lihat KTI -->
+          <a
+            href="https://drive.google.com/file/d/1T8-Ns0aqpgeWkZC188qwQtcLeGUdEf7l/view?usp=drivesdk"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="shimmer-effect btn-glow inline-flex items-center gap-2.5 px-6 py-3.5 bg-emerald-500 hover:bg-emerald-400 text-emerald-950 font-extrabold text-xs uppercase tracking-wider rounded-xl transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 shadow-lg shadow-emerald-500/30"
+          >
+            <i data-lucide="file-text" class="w-4 h-4 text-emerald-950"></i>
+            <span>Lihat KTI</span>
+            <i data-lucide="external-link" class="w-3.5 h-3.5 opacity-70"></i>
+          </a>
+
+          <!-- Tombol Lihat Poster -->
+          <button
+            type="button"
+            id="openPosterBtn"
+            class="inline-flex items-center gap-2.5 px-6 py-3.5 bg-white/10 hover:bg-white/20 text-white font-extrabold text-xs uppercase tracking-wider rounded-xl border border-white/20 backdrop-blur-md transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 hover:border-emerald-400/50 hover:text-emerald-300 shadow-md"
+          >
+            <i data-lucide="image" class="w-4 h-4 text-emerald-400"></i>
+            <span>Lihat Poster</span>
+          </button>
+        </div>
       </div>
     </section>
+
+    <!-- MODAL POSTER INTERAKTIF -->
+    <div
+      id="posterModal"
+      class="modal-backdrop hidden-modal fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-md"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div
+        class="modal-content relative w-full max-w-4xl bg-slate-900 rounded-3xl border border-emerald-500/30 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
+      >
+        <!-- Modal Header -->
+        <div class="px-6 py-4 border-b border-slate-800 flex items-center justify-between bg-slate-900/90">
+          <div class="flex items-center gap-2.5">
+            <div class="p-2 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+              <i data-lucide="sparkles" class="w-4 h-4"></i>
+            </div>
+            <div>
+              <h3 class="text-sm font-bold text-white leading-none">Poster Resmi BIOMA'HAD SMART</h3>
+              <p class="text-[11px] text-slate-400 mt-1">Tim DEBUGGERS - UIN SMH Banten</p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <a
+              href="assets/poster.jpg"
+              download
+              class="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+              title="Unduh Poster"
+            >
+              <i data-lucide="download" class="w-4 h-4"></i>
+            </a>
+            <button
+              type="button"
+              id="closePosterBtn"
+              class="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+              aria-label="Tutup"
+            >
+              <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Modal Body (Gambar Poster) -->
+        <div class="p-4 sm:p-6 overflow-y-auto flex items-center justify-center bg-slate-950/50">
+          <img
+            src="assets/poster.jpg"
+            alt="Poster BIOMA'HAD SMART"
+            class="max-w-full max-h-[70vh] rounded-xl object-contain shadow-2xl border border-slate-800"
+            onerror="this.onerror=null; this.src='https://placehold.co/800x1130/022c22/ffffff?text=Poster+BIOMA%27HAD+SMART';"
+          />
+        </div>
+      </div>
+    </div>
+
     <!-- SOLUSI PENGELOLAAN LIMBAH -->
     <section
       id="tentang"
@@ -123,6 +347,7 @@
                 src="assets/prototipe.jpeg"
                 alt="Anatomi Reaktor BIOMA'HAD SMART"
                 class="w-full h-auto rounded-2xl object-contain"
+                onerror="this.onerror=null; this.src='https://placehold.co/600x400/022c22/ffffff?text=Prototipe+BIOMA%27HAD';"
               />
             </div>
           </div>
@@ -240,6 +465,7 @@
                 src="assets/rangkaian.jpeg"
                 alt="Skematik Rangkaian IoT ESP32"
                 class="w-full h-auto rounded-2xl object-contain"
+                onerror="this.onerror=null; this.src='https://placehold.co/600x400/022c22/ffffff?text=Rangkaian+ESP32';"
               />
               <p class="text-center text-xs text-slate-500 mt-3 font-semibold">
                 Diagram Skematik Rangkaian Elektronik BIOMA'HAD SMART
@@ -273,6 +499,7 @@
             src="assets/prototipe.jpeg"
             alt="Prototipe BIOMA'HAD SMART Utuh"
             class="w-full h-auto rounded-2xl object-cover"
+            onerror="this.onerror=null; this.src='https://placehold.co/800x450/022c22/ffffff?text=Sistem+BIOMA%27HAD+SMART';"
           />
         </div>
 
@@ -371,27 +598,18 @@
           <div
             class="pt-2 flex flex-wrap gap-4 text-xs font-bold text-emerald-900"
           >
-            <span class="flex items-center gap-1.5"
-              ><i
-                data-lucide="check-circle"
-                class="w-4 h-4 text-emerald-600"
-              ></i>
-              Monitoring IoT 24/7</span
-            >
-            <span class="flex items-center gap-1.5"
-              ><i
-                data-lucide="check-circle"
-                class="w-4 h-4 text-emerald-600"
-              ></i>
-              Bebas Risiko Sour Digester</span
-            >
-            <span class="flex items-center gap-1.5"
-              ><i
-                data-lucide="check-circle"
-                class="w-4 h-4 text-emerald-600"
-              ></i>
-              Inovasi Tim DEBUGGERS</span
-            >
+            <span class="flex items-center gap-1.5">
+              <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i>
+              Monitoring IoT 24/7
+            </span>
+            <span class="flex items-center gap-1.5">
+              <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i>
+              Bebas Risiko Sour Digester
+            </span>
+            <span class="flex items-center gap-1.5">
+              <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i>
+              Inovasi Tim DEBUGGERS
+            </span>
           </div>
         </div>
       </div>
@@ -471,7 +689,77 @@
       </div>
     </footer>
 
-    <!-- Custom JavaScript -->
-    <script src="script.js"></script>
+    <!-- Embedded Custom JavaScript -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // 1. Inisialisasi Icon Lucide
+        if (typeof lucide !== "undefined") {
+          lucide.createIcons();
+        }
+
+        // 2. Smooth Scroll dengan Offset untuk Header Sticky
+        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+          anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute("href");
+            if (targetId === "#") return;
+
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+              const headerOffset = 80;
+              const elementPosition = targetElement.getBoundingClientRect().top;
+              const offsetPosition =
+                elementPosition + window.pageYOffset - headerOffset;
+
+              window.scrollTo({
+                top: offsetPosition,
+                behavior: "smooth",
+              });
+            }
+          });
+        });
+
+        // 3. Modal Poster Control
+        const posterModal = document.getElementById("posterModal");
+        const openPosterBtn = document.getElementById("openPosterBtn");
+        const closePosterBtn = document.getElementById("closePosterBtn");
+
+        function openModal() {
+          posterModal.classList.remove("hidden-modal");
+          posterModal.classList.add("active-modal");
+          document.body.style.overflow = "hidden";
+        }
+
+        function closeModal() {
+          posterModal.classList.remove("active-modal");
+          posterModal.classList.add("hidden-modal");
+          document.body.style.overflow = "";
+        }
+
+        if (openPosterBtn && posterModal) {
+          openPosterBtn.addEventListener("click", openModal);
+        }
+
+        if (closePosterBtn && posterModal) {
+          closePosterBtn.addEventListener("click", closeModal);
+        }
+
+        // Close on backdrop click
+        if (posterModal) {
+          posterModal.addEventListener("click", (e) => {
+            if (e.target === posterModal) {
+              closeModal();
+            }
+          });
+
+          // Close on Escape key press
+          document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape" && posterModal.classList.contains("active-modal")) {
+              closeModal();
+            }
+          });
+        }
+      });
+    </script>
   </body>
 </html>
