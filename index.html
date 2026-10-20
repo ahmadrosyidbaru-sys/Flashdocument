@@ -1,0 +1,477 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BIOMA'HAD SMART - Pengolahan Limbah & Bioenergi IoT</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css" />
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+  </head>
+  <body class="bg-white text-slate-800 antialiased">
+    <!-- TOP MINI BAR -->
+    <div
+      class="bg-emerald-900 text-white text-xs py-2 px-4 sm:px-8 flex justify-between items-center border-b border-emerald-800"
+    >
+      <div class="flex items-center gap-6">
+        <span class="hidden sm:flex items-center gap-1.5"
+          ><i
+            data-lucide="graduation-cap"
+            class="w-3.5 h-3.5 text-emerald-400"
+          ></i>
+          UIN Sultan Maulana Hasanuddin Banten</span
+        >
+      </div>
+      <div class="font-semibold text-emerald-300">OASE PTKIN III 2026</div>
+    </div>
+
+    <!-- MAIN HEADER / NAVBAR -->
+    <header
+      class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-sm"
+    >
+      <div
+        class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between"
+      >
+        <!-- BRAND LOGO (Ganti Icon dengan File Logo Gambar) -->
+        <div class="flex items-center gap-3">
+          <img
+            src="assets/Logo.png"
+            alt="Logo BIOMA'HAD SMART"
+            class="h-12 w-auto object-contain"
+          />
+          <div>
+            <span
+              class="text-xl font-extrabold text-emerald-950 tracking-tight block leading-none"
+            >
+              BIOMA'HAD SMART
+            </span>
+            <span
+              class="text-[10px] font-bold text-emerald-600 uppercase tracking-widest"
+            >
+              IoT Biodigester System
+            </span>
+          </div>
+        </div>
+
+        <!-- NAVIGASI -->
+        <nav
+          class="hidden md:flex items-center gap-8 font-semibold text-sm text-slate-600"
+        >
+          <a href="#tentang" class="hover:text-emerald-600 transition-colors"
+            >Tentang BIOMA'HAD</a
+          >
+          <a
+            href="#spesifikasi"
+            class="hover:text-emerald-600 transition-colors"
+            >Spesifikasi Teknologi</a
+          >
+          <a href="#sistem" class="hover:text-emerald-600 transition-colors"
+            >Fitur IoT</a
+          >
+          <a href="#cara-kerja" class="hover:text-emerald-600 transition-colors"
+            >Cara Kerja</a
+          >
+          <a href="#kontak" class="hover:text-emerald-600 transition-colors"
+            >Tim DEBUGGERS</a
+          >
+        </nav>
+      </div>
+    </header>
+
+    <!-- HERO BANNER -->
+    <section
+      class="relative flex min-h-[560px] md:min-h-[620px] lg:min-h-[680px] items-center bg-emerald-950 text-white py-16 md:py-20 overflow-hidden"
+    >
+      <!-- Gambar Background + Layer Filter Kontras -->
+      <div class="hero-bg-overlay absolute inset-0"></div>
+
+      <!-- Overlay Dark Gradient (Agar Teks Tetap Mudah Dibaca) -->
+      <div
+        class="absolute inset-0 bg-gradient-to-r from-emerald-950/95 via-emerald-950/75 to-emerald-950/10"
+      ></div>
+
+      <!-- Konten Teks Hero -->
+      <div
+        class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4"
+      >
+        <h1
+          class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight max-w-3xl"
+        >
+          Menjadikan Sampah Organik Menjadi Solusi Energi
+        </h1>
+        <p class="text-slate-300 text-sm sm:text-base max-w-xl">
+          Pengembangan Prototipe Biodigester Berbasis IoT untuk Mendukung
+          Kemandirian Energi Ma'had Melalui Circular Economy.
+        </p>
+      </div>
+    </section>
+    <!-- SOLUSI PENGELOLAAN LIMBAH -->
+    <section
+      id="tentang"
+      class="py-16 md:py-24 bg-white border-b border-slate-100"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <div class="lg:col-span-6">
+            <div
+              class="rounded-3xl bg-slate-50 p-4 border border-slate-200 shadow-lg"
+            >
+              <img
+                src="assets/prototipe.jpeg"
+                alt="Anatomi Reaktor BIOMA'HAD SMART"
+                class="w-full h-auto rounded-2xl object-contain"
+              />
+            </div>
+          </div>
+
+          <div class="lg:col-span-6 space-y-6">
+            <h2
+              class="text-2xl sm:text-3xl font-extrabold text-emerald-950 leading-tight"
+            >
+              Solusi Pengelolaan Limbah Organik dengan BIOMA'HAD SMART
+            </h2>
+            <p class="text-slate-600 text-sm sm:text-base leading-relaxed">
+              BIOMA'HAD SMART adalah sistem pengolahan limbah organik
+              terintegrasi yang mengubah sampah dapur basah dan sisa makanan
+              Ma'had menjadi sumber energi terbarukan berupa biogas terukur,
+              sekaligus menghasilkan pupuk hayati cair yang ramah lingkungan.
+            </p>
+            <p class="text-slate-600 text-sm leading-relaxed">
+              Dilengkapi sistem monitoring berbasis Internet of Things (IoT)
+              untuk mengamati kondisi fermentasi anaerobik secara berkelanjutan
+              guna mencegah terjadinya akumulasi asam berlebih (<em
+                >sour digester</em
+              >).
+            </p>
+            <div>
+              <a
+                href="#cara-kerja"
+                class="inline-flex items-center gap-2 px-6 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md shadow-emerald-600/20"
+              >
+                Lihat Cara Kerja
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SPESIFIKASI TEKNOLOGI -->
+    <section
+      id="spesifikasi"
+      class="py-16 md:py-24 bg-emerald-50/50 border-b border-slate-100"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <div class="lg:col-span-6 space-y-6">
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-emerald-950">
+              Spesifikasi Teknologi
+            </h2>
+
+            <ul class="space-y-4">
+              <li class="flex items-start gap-3">
+                <div
+                  class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0 mt-0.5"
+                >
+                  <i data-lucide="check" class="w-4 h-4"></i>
+                </div>
+                <span class="text-xs sm:text-sm text-slate-700 font-medium"
+                  ><strong>Reaktor Utama:</strong> Ember fermentasi anaerobik
+                  kapasitas nominal 18 Liter kedap udara.</span
+                >
+              </li>
+              <li class="flex items-start gap-3">
+                <div
+                  class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0 mt-0.5"
+                >
+                  <i data-lucide="check" class="w-4 h-4"></i>
+                </div>
+                <span class="text-xs sm:text-sm text-slate-700 font-medium"
+                  ><strong>Sistem Pemrosesan IoT:</strong> Mikrokontroler ESP32
+                  terintegrasi modul Wi-Fi telemetri.</span
+                >
+              </li>
+              <li class="flex items-start gap-3">
+                <div
+                  class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0 mt-0.5"
+                >
+                  <i data-lucide="check" class="w-4 h-4"></i>
+                </div>
+                <span class="text-xs sm:text-sm text-slate-700 font-medium"
+                  ><strong>Multi-Sensor Precision:</strong> Sensor pH
+                  (PH-4502C), Suhu (DS18B20), Metana (MQ-4 CH4), dan Pressure
+                  Transducer.</span
+                >
+              </li>
+              <li class="flex items-start gap-3">
+                <div
+                  class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0 mt-0.5"
+                >
+                  <i data-lucide="check" class="w-4 h-4"></i>
+                </div>
+                <span class="text-xs sm:text-sm text-slate-700 font-medium"
+                  ><strong>Sistem Filtrasi Ganda:</strong> Tabung Silika Gel
+                  (penyerap kelembapan) & Karbon Aktif (adsorpsi bau/H2S).</span
+                >
+              </li>
+              <li class="flex items-start gap-3">
+                <div
+                  class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0 mt-0.5"
+                >
+                  <i data-lucide="check" class="w-4 h-4"></i>
+                </div>
+                <span class="text-xs sm:text-sm text-slate-700 font-medium"
+                  ><strong>Estimasi Biogas:</strong> ~0.14 m³ biogas per 3 kg
+                  akumulasi sampah organik Ma'had.</span
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div class="lg:col-span-6">
+            <div
+              class="rounded-3xl bg-white p-4 border border-slate-200 shadow-md"
+            >
+              <img
+                src="assets/rangkaian.jpeg"
+                alt="Skematik Rangkaian IoT ESP32"
+                class="w-full h-auto rounded-2xl object-contain"
+              />
+              <p class="text-center text-xs text-slate-500 mt-3 font-semibold">
+                Diagram Skematik Rangkaian Elektronik BIOMA'HAD SMART
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SISTEM BIOMA'HAD SMART -->
+    <section
+      id="sistem"
+      class="py-16 md:py-24 bg-white border-b border-slate-100"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
+        <div class="max-w-2xl mx-auto space-y-3">
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-emerald-950">
+            Sistem BIOMA'HAD SMART & IoT Telemetry
+          </h2>
+          <p class="text-slate-600 text-sm">
+            Pemantauan parameter fisik-kimia reaktor secara konsisten melalui
+            integrasi antarmuka digital.
+          </p>
+        </div>
+
+        <div
+          class="max-w-3xl mx-auto bg-slate-50 p-4 rounded-3xl border border-slate-200 shadow-lg"
+        >
+          <img
+            src="assets/prototipe.jpeg"
+            alt="Prototipe BIOMA'HAD SMART Utuh"
+            class="w-full h-auto rounded-2xl object-cover"
+          />
+        </div>
+
+        <p class="text-slate-600 text-sm max-w-3xl mx-auto leading-relaxed">
+          BIOMA'HAD SMART menyediakan solusi lengkap dan efisien untuk mengelola
+          limbah serta menghasilkan energi terbarukan. Dengan memantau parameter
+          suhu, pH, konsentrasi gas metana, dan tekanan secara digital, risiko
+          kegagalan biodigester dapat diantisipasi secara tepat.
+        </p>
+      </div>
+    </section>
+
+    <!-- CARA KERJA BIOMA'HAD SMART -->
+    <section
+      id="cara-kerja"
+      class="py-16 md:py-24 bg-emerald-50/50 border-b border-slate-100"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        <h2
+          class="text-2xl sm:text-3xl font-extrabold text-emerald-950 text-center"
+        >
+          Cara Kerja BIOMA'HAD SMART
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div
+            class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm text-center space-y-4"
+          >
+            <div
+              class="w-12 h-12 rounded-full bg-emerald-600 text-white font-extrabold text-lg flex items-center justify-center mx-auto shadow-md shadow-emerald-600/30"
+            >
+              1
+            </div>
+            <h3 class="font-bold text-base text-emerald-950">
+              Kumpulkan Sampah Digester
+            </h3>
+            <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
+              Masukkan sampah organik sisa makanan Ma'had yang telah dipilah dan
+              dicampur air dengan rasio 1:1 ke dalam reaktor.
+            </p>
+          </div>
+
+          <div
+            class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm text-center space-y-4"
+          >
+            <div
+              class="w-12 h-12 rounded-full bg-emerald-600 text-white font-extrabold text-lg flex items-center justify-center mx-auto shadow-md shadow-emerald-600/30"
+            >
+              2
+            </div>
+            <h3 class="font-bold text-base text-emerald-950">
+              Pemantauan IoT Real-Time
+            </h3>
+            <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
+              Jaringan sensor mengirimkan data suhu, pH, dan konsentrasi metana
+              secara otomatis via ESP32 untuk memantau proses anaerobik.
+            </p>
+          </div>
+
+          <div
+            class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm text-center space-y-4"
+          >
+            <div
+              class="w-12 h-12 rounded-full bg-emerald-600 text-white font-extrabold text-lg flex items-center justify-center mx-auto shadow-md shadow-emerald-600/30"
+            >
+              3
+            </div>
+            <h3 class="font-bold text-base text-emerald-950">
+              Panen Biogas & Bio-Slurry
+            </h3>
+            <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
+              Biogas murni siap dimanfaatkan untuk kompor, sedangkan ampas
+              olahan dapat dimanfaatkan sebagai pupuk tanaman hayati.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PENGELOLAAN LIMBAH EFISIEN BANNER -->
+    <section class="py-16 bg-white border-b border-slate-100">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div
+          class="bg-emerald-100/60 p-8 sm:p-12 rounded-3xl border border-emerald-200 space-y-4"
+        >
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-emerald-950">
+            Pengelolaan Limbah Secara Efisien dan Ramah Lingkungan
+          </h2>
+          <p
+            class="text-slate-700 text-sm sm:text-base max-w-2xl leading-relaxed"
+          >
+            Solusi inovatif yang mengubah limbah organik menjadi energi bersih
+            untuk kebutuhan energi Ma'had serta mendukung terciptanya konsep
+            Kampus Hijau.
+          </p>
+          <div
+            class="pt-2 flex flex-wrap gap-4 text-xs font-bold text-emerald-900"
+          >
+            <span class="flex items-center gap-1.5"
+              ><i
+                data-lucide="check-circle"
+                class="w-4 h-4 text-emerald-600"
+              ></i>
+              Monitoring IoT 24/7</span
+            >
+            <span class="flex items-center gap-1.5"
+              ><i
+                data-lucide="check-circle"
+                class="w-4 h-4 text-emerald-600"
+              ></i>
+              Bebas Risiko Sour Digester</span
+            >
+            <span class="flex items-center gap-1.5"
+              ><i
+                data-lucide="check-circle"
+                class="w-4 h-4 text-emerald-600"
+              ></i>
+              Inovasi Tim DEBUGGERS</span
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer
+      id="kontak"
+      class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div class="space-y-3">
+            <h3 class="text-white font-extrabold text-base">BIOMA'HAD SMART</h3>
+            <p class="text-xs leading-relaxed">
+              Sistem biodigester berbasis IoT untuk mendukung kemandirian energi
+              Ma'had melalui circular economy.
+            </p>
+          </div>
+          <div>
+            <h4
+              class="text-white font-bold text-xs uppercase tracking-wider mb-3"
+            >
+              Navigasi
+            </h4>
+            <ul class="space-y-2 text-xs">
+              <li>
+                <a href="#tentang" class="hover:text-emerald-400"
+                  >Tentang BIOMA'HAD</a
+                >
+              </li>
+              <li>
+                <a href="#spesifikasi" class="hover:text-emerald-400"
+                  >Spesifikasi Teknologi</a
+                >
+              </li>
+              <li>
+                <a href="#cara-kerja" class="hover:text-emerald-400"
+                  >Cara Kerja</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4
+              class="text-white font-bold text-xs uppercase tracking-wider mb-3"
+            >
+              Tim DEBUGGERS
+            </h4>
+            <p class="text-xs">
+              <strong>Dosen Pembimbing:</strong> M. Iman Wahyudi, M.Kom.
+            </p>
+            <p class="text-xs mt-1">
+              <strong>Anggota:</strong> M. Ghathaan Faturrahman
+            </p>
+            <p class="text-xs">Ahmad Rosyid, Raudhotus Sifa, Ira Rahmawati</p>
+          </div>
+          <div>
+            <h4
+              class="text-white font-bold text-xs uppercase tracking-wider mb-3"
+            >
+              Instansi
+            </h4>
+            <p class="text-xs">Fakultas Sains dan Teknologi</p>
+            <p class="text-xs">UIN Sultan Maulana Hasanuddin Banten</p>
+            <p class="text-xs text-emerald-400 font-semibold mt-2">
+              OASE PTKIN III 2026
+            </p>
+          </div>
+        </div>
+        <div
+          class="pt-8 border-t border-slate-800 text-center text-xs text-slate-500"
+        >
+          Copyright © 2026 Tim DEBUGGERS - UIN Sultan Maulana Hasanuddin Banten.
+          All Rights Reserved.
+        </div>
+      </div>
+    </footer>
+
+    <!-- Custom JavaScript -->
+    <script src="script.js"></script>
+  </body>
+</html>
