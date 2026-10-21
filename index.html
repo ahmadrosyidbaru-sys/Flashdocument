@@ -1,1018 +1,765 @@
 <!doctype html>
-<html lang="id" class="scroll-smooth">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BIOMA'HAD SMART - Pengolahan Limbah & Bioenergi IoT</title>
-    
-    <!-- Google Font: Poppins -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              emerald: {
-                50: "#f0fdf4",
-                100: "#dcfce7",
-                200: "#bbf7d0",
-                300: "#6ee7b7",
-                400: "#34d399",
-                500: "#10b981",
-                600: "#059669",
-                700: "#047857",
-                800: "#065f46",
-                900: "#064e3b",
-                950: "#022c22",
-              },
-            },
-            fontFamily: {
-              sans: ['"Poppins"', 'sans-serif'],
-              mono: ['"Poppins"', 'sans-serif'],
-            }
-          },
-        },
-      };
-    </script>
-
-    <!-- Lucide Icons CDN -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-
-    <!-- Embedded Custom Motion CSS -->
-    <style>
-      html {
-        scroll-behavior: smooth;
-      }
-
-      body {
-        font-family: "Poppins", sans-serif;
-        overflow-x: hidden;
-      }
-
-      /* Hero Section Background Fallback & Styling */
-      .hero-bg-overlay {
-        background-image: url("assets/Hero.webp");
-        background-size: cover;
-        background-position: 65% center;
-        background-repeat: no-repeat;
-      }
-
-      /* Custom Scrollbar */
-      ::-webkit-scrollbar {
-        width: 8px;
-      }
-
-      ::-webkit-scrollbar-track {
-        background: #022c22;
-      }
-
-      ::-webkit-scrollbar-thumb {
-        background: #059669;
-        border-radius: 4px;
-      }
-
-      ::-webkit-scrollbar-thumb:hover {
-        background: #10b981;
-      }
-
-      /* ANIMASI MOTION UTAMA */
-      @keyframes floatSlow {
-        0%, 100% { transform: translateY(0px) rotate(0deg); }
-        50% { transform: translateY(-10px) rotate(1deg); }
-      }
-
-      @keyframes floatReverse {
-        0%, 100% { transform: translateY(0px) rotate(0deg); }
-        50% { transform: translateY(10px) rotate(-1deg); }
-      }
-
-      @keyframes pulseGlow {
-        0%, 100% { box-shadow: 0 0 15px rgba(16, 185, 129, 0.3), 0 0 30px rgba(16, 185, 129, 0.1); }
-        50% { box-shadow: 0 0 30px rgba(16, 185, 129, 0.7), 0 0 50px rgba(16, 185, 129, 0.3); }
-      }
-
-      @keyframes shimmer {
-        0% { transform: translateX(-150%) rotate(25deg); }
-        100% { transform: translateX(150%) rotate(25deg); }
-      }
-
-      @keyframes gridMove {
-        0% { background-position: 0 0; }
-        100% { background-position: 40px 40px; }
-      }
-
-      @keyframes bubbleRise {
-        0% { transform: translateY(100%) scale(0.3); opacity: 0; }
-        50% { opacity: 0.8; }
-        100% { transform: translateY(-100px) scale(1.2); opacity: 0; }
-      }
-
-      @keyframes scanline {
-        0% { transform: translateY(-100%); }
-        100% { transform: translateY(1000%); }
-      }
-
-      .animate-float {
-        animation: floatSlow 6s ease-in-out infinite;
-      }
-
-      .animate-float-reverse {
-        animation: floatReverse 7s ease-in-out infinite;
-      }
-
-      .btn-glow {
-        animation: pulseGlow 3s infinite ease-in-out;
-      }
-
-      .tech-grid-bg {
-        background-size: 30px 30px;
-        background-image: 
-          linear-gradient(to right, rgba(16, 185, 129, 0.08) 1px, transparent 1px),
-          linear-gradient(to bottom, rgba(16, 185, 129, 0.08) 1px, transparent 1px);
-        animation: gridMove 20s linear infinite;
-      }
-
-      .hero-title-gradient {
-        background: linear-gradient(135deg, #ffffff 0%, #a7f3d0 50%, #34d399 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
-
-      .shimmer-effect {
-        position: relative;
-        overflow: hidden;
-      }
-
-      .shimmer-effect::after {
-        content: '';
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: linear-gradient(
-          60deg,
-          transparent 30%,
-          rgba(255, 255, 255, 0.3) 50%,
-          transparent 70%
-        );
-        transform: rotate(25deg);
-        animation: shimmer 4s infinite linear;
-      }
-
-      /* Scroll Reveal Classes (AOS Like Effect) */
-      .reveal {
-        opacity: 0;
-        transform: translateY(35px) scale(0.98);
-        transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        will-change: opacity, transform;
-      }
-
-      .reveal-left {
-        opacity: 0;
-        transform: translateX(-40px);
-        transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-      }
-
-      .reveal-right {
-        opacity: 0;
-        transform: translateX(40px);
-        transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-      }
-
-      .reveal.active, .reveal-left.active, .reveal-right.active {
-        opacity: 1;
-        transform: translateY(0) translateX(0) scale(1);
-      }
-
-      /* Modal Animations */
-      .modal-backdrop {
-        transition: opacity 0.3s ease, visibility 0.3s ease;
-      }
-      .modal-backdrop.hidden-modal {
-        opacity: 0;
-        pointer-events: none;
-        visibility: hidden;
-      }
-      .modal-backdrop.active-modal {
-        opacity: 1;
-        pointer-events: auto;
-        visibility: visible;
-      }
-      .modal-content {
-        transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.35s ease;
-      }
-      .modal-backdrop.hidden-modal .modal-content {
-        transform: scale(0.85) translateY(30px);
-        opacity: 0;
-      }
-      .modal-backdrop.active-modal .modal-content {
-        transform: scale(1) translateY(0);
-        opacity: 1;
-      }
-
-      /* Interactive Hover Glass Card Effect */
-      .glass-card {
-        background: rgba(255, 255, 255, 0.85);
-        backdrop-filter: blur(12px);
-        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      }
-      .glass-card:hover {
-        transform: translateY(-8px) scale(1.01);
-        box-shadow: 0 20px 30px -10px rgba(5, 150, 105, 0.15);
-      }
-
-      /* Glowing Image Frame */
-      .img-glow-container {
-        position: relative;
-        overflow: hidden;
-      }
-      .img-glow-container::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.3), transparent 70%);
-        opacity: 0;
-        transition: opacity 0.5s ease;
-        z-index: 10;
-        pointer-events: none;
-      }
-      .img-glow-container:hover::before {
-        opacity: 1;
-      }
-
-      /* Custom Particle Bubbles in Bio Section */
-      .bio-bubble {
-        position: absolute;
-        border-radius: 50%;
-        background: rgba(52, 211, 153, 0.25);
-        border: 1px solid rgba(16, 185, 129, 0.4);
-        animation: bubbleRise 6s infinite ease-in;
-        pointer-events: none;
-      }
-    </style>
-  </head>
-  <body class="bg-slate-50 text-slate-800 antialiased selection:bg-emerald-500 selection:text-white">
-    <!-- TOP MINI BAR -->
-    <div
-      class="bg-emerald-950 text-white text-xs py-2 px-4 sm:px-8 flex justify-between items-center border-b border-emerald-800/60 relative z-50"
-    >
-      <div class="flex items-center gap-6 max-w-7xl mx-auto w-full justify-between">
-        <div class="flex items-center gap-3">
-          <span class="inline-flex items-center gap-1.5 font-medium text-emerald-300">
-            <i data-lucide="graduation-cap" class="w-4 h-4 text-emerald-400 animate-bounce"></i>
-            <span class="hidden sm:inline">Fakultas Sains dan Teknologi - </span>UIN Sultan Maulana Hasanuddin Banten
-          </span>
-        </div>
-        <div class="flex items-center gap-2 font-bold text-emerald-300">
-          <span class="px-2 py-0.5 rounded-full bg-emerald-800/80 border border-emerald-600/50 text-[10px] uppercase tracking-wider text-emerald-200">
-            Kategori Karya Tulis
-          </span>
-          <span>OASE PTKIN III 2026</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- MAIN HEADER / NAVBAR -->
-    <header
-      id="mainNavbar"
-      class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200/80 transition-all duration-300 shadow-sm"
-    >
-      <div
-        class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between"
-      >
-        <!-- BRAND LOGO WITH GLOW -->
-        <a href="#" class="group flex items-center gap-3.5 transition-transform duration-300 hover:scale-105">
-          <div class="relative">
-            <div class="absolute -inset-1 rounded-full bg-emerald-500/30 blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            <img
-              src="assets/Logo.png"
-              alt="Logo BIOMA'HAD SMART"
-              class="relative h-12 w-auto object-contain transform transition-transform duration-500 group-hover:rotate-6"
-              onerror="this.onerror=null; this.src='https://placehold.co/200x80/022c22/ffffff?text=BIOMA%27HAD';"
-            />
-          </div>
-          <div>
-            <span
-              class="text-xl font-black text-emerald-950 tracking-tight block leading-none group-hover:text-emerald-600 transition-colors"
-            >
-              BIOMA'HAD SMART
-            </span>
-            <span
-              class="text-[10px] font-bold text-emerald-600 uppercase tracking-widest block mt-0.5"
-            >
-              IoT Biodigester System
-            </span>
-          </div>
-        </a>
-
-        <!-- NAVIGASI DESKTOP -->
-        <nav
-          class="hidden md:flex items-center gap-7 font-bold text-xs uppercase tracking-wider text-slate-600"
-        >
-          <a href="#tentang" class="relative py-2 hover:text-emerald-600 transition-colors after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-emerald-600 hover:after:w-full after:transition-all after:duration-300"
-            >Tentang BIOMA'HAD</a
-          >
-          <a
-            href="#spesifikasi"
-            class="relative py-2 hover:text-emerald-600 transition-colors after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-emerald-600 hover:after:w-full after:transition-all after:duration-300"
-            >Spesifikasi Teknologi</a
-          >
-          <a href="#telemetri" class="relative py-2 hover:text-emerald-600 transition-colors after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-emerald-600 hover:after:w-full after:transition-all after:duration-300"
-            >Monitoring IoT</a
-          >
-          <a href="#cara-kerja" class="relative py-2 hover:text-emerald-600 transition-colors after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-emerald-600 hover:after:w-full after:transition-all after:duration-300"
-            >Cara Kerja</a
-          >
-          <a href="#kontak" class="relative py-2 hover:text-emerald-600 transition-colors after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-emerald-600 hover:after:w-full after:transition-all after:duration-300"
-            >Tim DEBUGGERS</a
-          >
-        </nav>
-
-        <!-- CTA STATUS INDICATOR -->
-        <div class="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold">
-          <span class="relative flex h-2.5 w-2.5">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
-          </span>
-          <span class="font-mono text-[11px] font-bold">SYSTEM ACTIVE</span>
-        </div>
-      </div>
-    </header>
-
-    <!-- HERO BANNER -->
-    <section
-      class="relative flex min-h-[620px] md:min-h-[680px] lg:min-h-[720px] items-center bg-emerald-950 text-white py-16 md:py-24 overflow-hidden"
-    >
-      <!-- Background Overlay & Tech Grid -->
-      <div class="hero-bg-overlay absolute inset-0 opacity-40"></div>
-      <div class="tech-grid-bg absolute inset-0 opacity-30"></div>
-      
-      <!-- Gradient radial overlay -->
-      <div
-        class="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,_var(--tw-gradient-stops))] from-emerald-600/30 via-emerald-950/85 to-emerald-950"
-      ></div>
-
-      <!-- Animated Background Bubbles -->
-      <div id="heroBubbles" class="absolute inset-0 pointer-events-none overflow-hidden"></div>
-
-      <!-- Konten Teks Hero -->
-      <div
-        class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
-      >
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          
-          <div class="lg:col-span-7 space-y-6 reveal active">
-            <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-emerald-500/15 border border-emerald-400/30 backdrop-blur-md text-emerald-300 text-xs font-semibold shadow-inner">
-              <span class="relative flex h-2 w-2">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
-              </span>
-              <span class="tracking-wide">Inovasi Terbarukan OASE PTKIN III 2026</span>
-            </div>
-
-            <h1
-              class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight hero-title-gradient"
-            >
-              Menjadikan Sampah Organik Menjadi Solusi Energi
-            </h1>
-            <p class="text-slate-300 text-sm sm:text-base max-w-xl leading-relaxed">
-              Pengembangan Prototipe Biodigester Berbasis <span class="text-emerald-400 font-semibold">Internet of Things (IoT)</span> untuk Mendukung
-              Kemandirian Energi Ma'had Melalui Circular Economy yang Berkelanjutan.
-            </p>
-
-            <!-- TOMBOL AKSI FUTURISTIK (KTI & POSTER) -->
-            <div class="pt-4 flex flex-wrap items-center gap-4">
-              <!-- Tombol Lihat KTI -->
-              <a
-                href="https://drive.google.com/file/d/1T8-Ns0aqpgeWkZC188qwQtcLeGUdEf7l/view?usp=drivesdk"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="shimmer-effect btn-glow inline-flex items-center gap-2.5 px-7 py-4 bg-emerald-500 hover:bg-emerald-400 text-emerald-950 font-extrabold text-xs uppercase tracking-wider rounded-xl transition-all duration-300 transform hover:-translate-y-1 active:translate-y-0 shadow-xl shadow-emerald-500/30 group"
-              >
-                <i data-lucide="file-text" class="w-4 h-4 text-emerald-950 transition-transform group-hover:scale-110"></i>
-                <span>Lihat KTI</span>
-                <i data-lucide="external-link" class="w-3.5 h-3.5 opacity-70 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"></i>
-              </a>
-
-              <!-- Tombol Lihat Poster -->
-              <button
-                type="button"
-                id="openPosterBtn"
-                class="inline-flex items-center gap-2.5 px-7 py-4 bg-white/10 hover:bg-white/20 text-white font-extrabold text-xs uppercase tracking-wider rounded-xl border border-white/20 backdrop-blur-md transition-all duration-300 transform hover:-translate-y-1 active:translate-y-0 hover:border-emerald-400/60 hover:text-emerald-300 shadow-md group"
-              >
-                <i data-lucide="image" class="w-4 h-4 text-emerald-400 transition-transform group-hover:scale-110"></i>
-                <span>Lihat Poster</span>
-                <i data-lucide="maximize-2" class="w-3.5 h-3.5 opacity-60 transition-transform group-hover:rotate-45"></i>
-              </button>
-            </div>
-
-            <!-- QUICK STATS METRICS WITH MOTION COUNTERS -->
-            <div class="pt-8 border-t border-emerald-800/60 grid grid-cols-3 gap-4 max-w-lg">
-              <div class="p-3 rounded-xl bg-emerald-900/40 border border-emerald-800/40 backdrop-blur-sm transition-all hover:bg-emerald-900/70">
-                <div class="text-xl sm:text-2xl font-black text-emerald-400 counter" data-target="18">0</div>
-                <div class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Kapasitas (L)</div>
-              </div>
-              <div class="p-3 rounded-xl bg-emerald-900/40 border border-emerald-800/40 backdrop-blur-sm transition-all hover:bg-emerald-900/70">
-                <div class="text-xl sm:text-2xl font-black text-emerald-400"><span class="counter" data-target="4">0</span> <span class="text-xs">Sensors</span></div>
-                <div class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">IoT Telemetry</div>
-              </div>
-              <div class="p-3 rounded-xl bg-emerald-900/40 border border-emerald-800/40 backdrop-blur-sm transition-all hover:bg-emerald-900/70">
-                <div class="text-xl sm:text-2xl font-black text-emerald-400"><span class="counter" data-target="100">0</span>%</div>
-                <div class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Eco Friendly</div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- MODAL POSTER INTERAKTIF -->
-    <div
-      id="posterModal"
-      class="modal-backdrop hidden-modal fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-slate-950/85 backdrop-blur-md"
-      role="dialog"
-      aria-modal="true"
-    >
-      <div
-        class="modal-content relative w-full max-w-4xl bg-slate-900 rounded-3xl border border-emerald-500/40 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
-      >
-        <!-- Modal Header -->
-        <div class="px-6 py-4 border-b border-slate-800 flex items-center justify-between bg-slate-900/90">
-          <div class="flex items-center gap-3">
-            <div class="p-2 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
-              <i data-lucide="sparkles" class="w-5 h-5 animate-spin" style="animation-duration: 8s;"></i>
-            </div>
-            <div>
-              <h3 class="text-sm font-bold text-white leading-none">Poster Resmi BIOMA'HAD SMART</h3>
-              <p class="text-[11px] text-slate-400 mt-1">Tim DEBUGGERS - UIN SMH Banten</p>
-            </div>
-          </div>
-
-          <div class="flex items-center gap-2">
-            <a
-              href="assets/poster.jpg"
-              download
-              class="p-2.5 rounded-xl text-slate-300 hover:text-emerald-400 hover:bg-slate-800 transition-all flex items-center gap-1.5 text-xs font-semibold"
-              title="Unduh Poster"
-            >
-              <i data-lucide="download" class="w-4 h-4"></i>
-              <span class="hidden sm:inline">Unduh</span>
-            </a>
-            <button
-              type="button"
-              id="closePosterBtn"
-              class="p-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-rose-500/20 hover:text-rose-400 transition-colors"
-              aria-label="Tutup"
-            >
-              <i data-lucide="x" class="w-5 h-5"></i>
-            </button>
-          </div>
-        </div>
-
-        <!-- Modal Body (Gambar Poster) -->
-        <div class="p-4 sm:p-6 overflow-y-auto flex items-center justify-center bg-slate-950/70">
-          <img
-            src="assets/poster.jpg"
-            alt="Poster BIOMA'HAD SMART"
-            class="max-w-full max-h-[72vh] rounded-xl object-contain shadow-2xl border border-slate-800 transition-transform duration-300 hover:scale-[1.02]"
-            onerror="this.onerror=null; this.src='https://placehold.co/800x1130/022c22/ffffff?text=Poster+BIOMA%27HAD+SMART';"
-          />
-        </div>
-      </div>
-    </div>
-
-    <!-- SOLUSI PENGELOLAAN LIMBAH -->
-    <section
-      id="tentang"
-      class="py-20 md:py-28 bg-white border-b border-slate-100 relative overflow-hidden"
-    >
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          
-          <div class="lg:col-span-6 reveal-left">
-            <div
-              class="img-glow-container rounded-3xl bg-slate-900 p-3 border border-slate-200 shadow-2xl transition-transform duration-500 hover:scale-[1.01]"
-            >
-              <img
-                src="assets/prototipe.jpeg"
-                alt="Anatomi Reaktor BIOMA'HAD SMART"
-                class="w-full h-auto rounded-2xl object-cover"
-                onerror="this.onerror=null; this.src='https://placehold.co/600x400/022c22/ffffff?text=Prototipe+BIOMA%27HAD';"
-              />
-              <div class="p-3 bg-slate-950 rounded-xl mt-3 flex justify-between items-center text-xs text-slate-300">
-                <span class="flex items-center gap-2">
-                  <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                  Prototipe Biodigester Terpasang
-                </span>
-                <span class="text-emerald-400 font-bold">Cap. 18 Liters</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="lg:col-span-6 space-y-6 reveal-right">
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-emerald-100 text-emerald-800 text-xs font-bold uppercase tracking-wider">
-              <i data-lucide="leaf" class="w-3.5 h-3.5"></i> Circular Economy
-            </div>
-            <h2
-              class="text-2xl sm:text-4xl font-extrabold text-emerald-950 leading-tight"
-            >
-              Solusi Pengelolaan Limbah Organik dengan BIOMA'HAD SMART
-            </h2>
-            <p class="text-slate-600 text-sm sm:text-base leading-relaxed">
-              <strong>BIOMA'HAD SMART</strong> adalah sistem pengolahan limbah organik
-              terintegrasi yang mengubah sampah dapur basah dan sisa makanan
-              Ma'had menjadi sumber energi terbarukan berupa biogas terukur,
-              sekaligus menghasilkan pupuk hayati cair yang ramah lingkungan.
-            </p>
-            <p class="text-slate-600 text-sm leading-relaxed">
-              Dilengkapi sistem monitoring berbasis <strong>Internet of Things (IoT)</strong>
-              untuk mengamati kondisi fermentasi anaerobik secara berkelanjutan
-              guna mencegah terjadinya akumulasi asam berlebih (<em class="text-emerald-800 font-semibold">sour digester</em>).
-            </p>
-
-            <!-- Feature Badges Grid -->
-            <div class="grid grid-cols-2 gap-4 pt-2">
-              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 transition-all hover:border-emerald-500 hover:bg-emerald-50/30">
-                <i data-lucide="recycle" class="w-6 h-6 text-emerald-600 mb-2"></i>
-                <div class="font-bold text-xs text-emerald-950">Zero Waste Concept</div>
-                <div class="text-[11px] text-slate-500 mt-0.5">Mengubah sampah menjadi pupuk & energi</div>
-              </div>
-              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 transition-all hover:border-emerald-500 hover:bg-emerald-50/30">
-                <i data-lucide="activity" class="w-6 h-6 text-emerald-600 mb-2"></i>
-                <div class="font-bold text-xs text-emerald-950">Early Warning System</div>
-                <div class="text-[11px] text-slate-500 mt-0.5">Mencegah kerusakan proses fermentasi</div>
-              </div>
-            </div>
-
-            <div class="pt-2">
-              <a
-                href="#cara-kerja"
-                class="inline-flex items-center gap-2.5 px-6 py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all duration-300 shadow-md shadow-emerald-600/30 hover:-translate-y-0.5"
-              >
-                <span>Lihat Cara Kerja</span>
-                <i data-lucide="arrow-right" class="w-4 h-4"></i>
-              </a>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- SPESIFIKASI TEKNOLOGI -->
-    <section
-      id="spesifikasi"
-      class="py-20 md:py-28 bg-emerald-950 text-white border-b border-emerald-900 relative overflow-hidden"
-    >
-      <div class="tech-grid-bg absolute inset-0 opacity-20"></div>
-
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          
-          <div class="lg:col-span-6 space-y-6 reveal-left">
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-emerald-500/20 text-emerald-300 text-xs font-bold uppercase tracking-wider border border-emerald-500/30">
-              <i data-lucide="cpu" class="w-3.5 h-3.5"></i> Hardware Architecture
-            </div>
-
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-white">
-              Spesifikasi Teknologi
-            </h2>
-            <p class="text-slate-300 text-sm leading-relaxed">
-              Komponen sensor tingkat tinggi yang diintegrasikan ke dalam platform IoT untuk pemantauan parameter biodigester yang akurat dan responsif.
-            </p>
-
-            <ul class="space-y-4">
-              <li class="glass-card !bg-slate-900/60 p-4 rounded-2xl border border-emerald-500/20 flex items-start gap-3 transition-all hover:border-emerald-400">
-                <div class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5 border border-emerald-500/30">
-                  <i data-lucide="container" class="w-4 h-4"></i>
-                </div>
-                <div>
-                  <span class="text-xs sm:text-sm text-white font-bold block">Reaktor Utama</span>
-                  <span class="text-xs text-slate-300">Ember fermentasi anaerobik kapasitas nominal 18 Liter kedap udara dengan seal anti-bocor.</span>
-                </div>
-              </li>
-
-              <li class="glass-card !bg-slate-900/60 p-4 rounded-2xl border border-emerald-500/20 flex items-start gap-3 transition-all hover:border-emerald-400">
-                <div class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5 border border-emerald-500/30">
-                  <i data-lucide="wifi" class="w-4 h-4"></i>
-                </div>
-                <div>
-                  <span class="text-xs sm:text-sm text-white font-bold block">Sistem Pemrosesan IoT</span>
-                  <span class="text-xs text-slate-300">Mikrokontroler ESP32 terintegrasi modul Wi-Fi telemetri data real-time.</span>
-                </div>
-              </li>
-
-              <li class="glass-card !bg-slate-900/60 p-4 rounded-2xl border border-emerald-500/20 flex items-start gap-3 transition-all hover:border-emerald-400">
-                <div class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5 border border-emerald-500/30">
-                  <i data-lucide="gauge" class="w-4 h-4"></i>
-                </div>
-                <div>
-                  <span class="text-xs sm:text-sm text-white font-bold block">Multi-Sensor Precision</span>
-                  <span class="text-xs text-slate-300">Sensor pH (PH-4502C), Suhu (DS18B20), Metana (MQ-4 CH4), dan Pressure Transducer.</span>
-                </div>
-              </li>
-
-              <li class="glass-card !bg-slate-900/60 p-4 rounded-2xl border border-emerald-500/20 flex items-start gap-3 transition-all hover:border-emerald-400">
-                <div class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5 border border-emerald-500/30">
-                  <i data-lucide="filter" class="w-4 h-4"></i>
-                </div>
-                <div>
-                  <span class="text-xs sm:text-sm text-white font-bold block">Sistem Filtrasi Ganda</span>
-                  <span class="text-xs text-slate-300">Tabung Silika Gel (penyerap kelembapan) & Karbon Aktif (adsorpsi bau/H2S).</span>
-                </div>
-              </li>
-            </ul>
-          </div>
-
-          <div class="lg:col-span-6 reveal-right">
-            <div
-              class="rounded-3xl bg-slate-900 p-4 border border-emerald-500/30 shadow-2xl relative"
-            >
-              <div class="overflow-hidden rounded-2xl">
-                <img
-                  src="assets/rangkaian.jpeg"
-                  alt="Skematik Rangkaian IoT ESP32"
-                  class="w-full h-auto rounded-2xl object-cover transition-transform duration-700 hover:scale-105"
-                  onerror="this.onerror=null; this.src='https://placehold.co/600x400/022c22/ffffff?text=Rangkaian+ESP32';"
-                />
-              </div>
-              <p class="text-center text-xs text-slate-400 mt-3 font-semibold flex items-center justify-center gap-2">
-                <i data-lucide="circuit-board" class="w-4 h-4 text-emerald-400"></i>
-                Diagram Skematik Rangkaian Elektronik BIOMA'HAD SMART
-              </p>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- CARA KERJA BIOMA'HAD SMART -->
-    <section
-      id="cara-kerja"
-      class="py-20 md:py-28 bg-emerald-50/60 border-b border-slate-100 relative overflow-hidden"
-    >
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16 relative z-10">
-        
-        <div class="text-center max-w-2xl mx-auto space-y-3 reveal">
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold uppercase tracking-wider">
-            Workflow Process
-          </div>
-          <h2
-            class="text-3xl sm:text-4xl font-extrabold text-emerald-950"
-          >
-            Cara Kerja BIOMA'HAD SMART
-          </h2>
-          <p class="text-slate-600 text-sm">
-            Tahapan efisien pengolahan sampah organik menjadi energi terbarukan secara otomatis.
-          </p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          
-          <!-- Step 1 -->
-          <div
-            class="glass-card p-8 rounded-3xl border border-slate-200/80 text-center space-y-5 reveal relative group"
-          >
-            <div
-              class="w-14 h-14 rounded-2xl bg-emerald-600 text-white font-black text-xl flex items-center justify-center mx-auto shadow-lg shadow-emerald-600/30 transform transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6"
-            >
-              1
-            </div>
-            <h3 class="font-bold text-lg text-emerald-950">
-              Pengumpulan Sampah Digester
-            </h3>
-            <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
-              Masukkan sampah organik sisa makanan Ma'had yang telah dipilah dan
-              dicampur air dengan rasio 1:1 ke dalam reaktor anaerobik.
-            </p>
-            <div class="pt-2 text-emerald-600 font-semibold text-xs flex items-center justify-center gap-1">
-              <i data-lucide="trash-2" class="w-4 h-4"></i> Input Bahan Organik
-            </div>
-          </div>
-
-          <!-- Step 2 -->
-          <div
-            class="glass-card p-8 rounded-3xl border border-slate-200/80 text-center space-y-5 reveal relative group"
-            style="transition-delay: 150ms;"
-          >
-            <div
-              class="w-14 h-14 rounded-2xl bg-emerald-600 text-white font-black text-xl flex items-center justify-center mx-auto shadow-lg shadow-emerald-600/30 transform transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6"
-            >
-              2
-            </div>
-            <h3 class="font-bold text-lg text-emerald-950">
-              Pemantauan IoT Real-Time
-            </h3>
-            <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
-              Jaringan sensor mengirimkan data suhu, pH, dan konsentrasi metana
-              secara otomatis via ESP32 untuk memantau proses anaerobik.
-            </p>
-            <div class="pt-2 text-emerald-600 font-semibold text-xs flex items-center justify-center gap-1">
-              <i data-lucide="radio" class="w-4 h-4 animate-pulse"></i> Sensor Monitoring
-            </div>
-          </div>
-
-          <!-- Step 3 -->
-          <div
-            class="glass-card p-8 rounded-3xl border border-slate-200/80 text-center space-y-5 reveal relative group"
-            style="transition-delay: 300ms;"
-          >
-            <div
-              class="w-14 h-14 rounded-2xl bg-emerald-600 text-white font-black text-xl flex items-center justify-center mx-auto shadow-lg shadow-emerald-600/30 transform transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6"
-            >
-              3
-            </div>
-            <h3 class="font-bold text-lg text-emerald-950">
-              Panen Biogas & Bio-Slurry
-            </h3>
-            <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
-              Biogas murni siap dimanfaatkan untuk kompor, sedangkan ampas
-              olahan dapat dimanfaatkan sebagai pupuk tanaman hayati.
-            </p>
-            <div class="pt-2 text-emerald-600 font-semibold text-xs flex items-center justify-center gap-1">
-              <i data-lucide="zap" class="w-4 h-4"></i> Energi & Pupuk Cair
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- PENGELOLAAN LIMBAH EFISIEN BANNER -->
-    <section class="py-16 bg-white border-b border-slate-100">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 reveal">
-        <div
-          class="bg-gradient-to-r from-emerald-900 to-emerald-950 p-8 sm:p-12 rounded-3xl text-white shadow-2xl relative overflow-hidden border border-emerald-800"
-        >
-          <!-- Shimmer line -->
-          <div class="absolute inset-0 tech-grid-bg opacity-20"></div>
-
-          <div class="relative z-10 max-w-3xl space-y-4">
-            <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold border border-emerald-500/30">
-              EKOSISTEM MA'HAD HIJAU
-            </span>
-            <h2 class="text-2xl sm:text-4xl font-black text-white leading-tight">
-              Pengelolaan Limbah Secara Efisien dan Ramah Lingkungan
-            </h2>
-            <p
-              class="text-slate-300 text-sm sm:text-base leading-relaxed"
-            >
-              Solusi inovatif yang mengubah limbah organik menjadi energi bersih
-              untuk kebutuhan energi Ma'had serta mendukung terciptanya konsep
-              Kampus Hijau secara terpadu.
-            </p>
-
-            <div
-              class="pt-4 flex flex-wrap gap-6 text-xs font-bold text-emerald-300"
-            >
-              <span class="flex items-center gap-2 bg-emerald-900/80 px-3.5 py-2 rounded-xl border border-emerald-800">
-                <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
-                Monitoring IoT 24/7
-              </span>
-              <span class="flex items-center gap-2 bg-emerald-900/80 px-3.5 py-2 rounded-xl border border-emerald-800">
-                <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
-                Bebas Risiko Sour Digester
-              </span>
-              <span class="flex items-center gap-2 bg-emerald-900/80 px-3.5 py-2 rounded-xl border border-emerald-800">
-                <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
-                Inovasi Tim DEBUGGERS
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer
-      id="kontak"
-      class="bg-slate-950 text-slate-400 py-16 border-t border-slate-800"
-    >
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
-          <div class="space-y-3">
-            <div class="flex items-center gap-2 text-white font-extrabold text-lg">
-              <i data-lucide="cpu" class="w-5 h-5 text-emerald-400"></i>
-              <span>BIOMA'HAD SMART</span>
-            </div>
-            <p class="text-xs leading-relaxed text-slate-400">
-              Sistem biodigester berbasis IoT untuk mendukung kemandirian energi
-              Ma'had melalui circular economy yang efisien dan ramah lingkungan.
-            </p>
-          </div>
-
-          <div>
-            <h4
-              class="text-white font-bold text-xs uppercase tracking-wider mb-4 border-b border-slate-800 pb-2"
-            >
-              Navigasi Cepat
-            </h4>
-            <ul class="space-y-2.5 text-xs">
-              <li>
-                <a href="#tentang" class="hover:text-emerald-400 transition-colors flex items-center gap-1.5"
-                  ><i data-lucide="chevron-right" class="w-3 h-3 text-emerald-500"></i> Tentang BIOMA'HAD</a
-                >
-              </li>
-              <li>
-                <a href="#spesifikasi" class="hover:text-emerald-400 transition-colors flex items-center gap-1.5"
-                  ><i data-lucide="chevron-right" class="w-3 h-3 text-emerald-500"></i> Spesifikasi Teknologi</a
-                >
-              </li>
-              <li>
-                <a href="#cara-kerja" class="hover:text-emerald-400 transition-colors flex items-center gap-1.5"
-                  ><i data-lucide="chevron-right" class="w-3 h-3 text-emerald-500"></i> Cara Kerja</a
-                >
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h4
-              class="text-white font-bold text-xs uppercase tracking-wider mb-4 border-b border-slate-800 pb-2"
-            >
-              Tim DEBUGGERS
-            </h4>
-            <p class="text-xs text-slate-300">
-              <strong class="text-emerald-400">Dosen Pembimbing:</strong><br />M. Iman Wahyudi, M.Kom.
-            </p>
-            <p class="text-xs mt-2 text-slate-300">
-              <strong class="text-emerald-400">Anggota Tim:</strong><br />M. Ghathaan Faturrahman<br />Ahmad Rosyid, Raudhotus Sifa, Ira Rahmawati
-            </p>
-          </div>
-
-          <div>
-            <h4
-              class="text-white font-bold text-xs uppercase tracking-wider mb-4 border-b border-slate-800 pb-2"
-            >
-              Instansi Universitas
-            </h4>
-            <p class="text-xs text-slate-300 font-semibold">Fakultas Sains dan Teknologi</p>
-            <p class="text-xs text-slate-400">UIN Sultan Maulana Hasanuddin Banten</p>
-            <div class="mt-4 p-2.5 rounded-xl bg-emerald-950 border border-emerald-800/80 text-emerald-300 font-bold text-xs inline-block">
-              OASE PTKIN III 2026
-            </div>
-          </div>
-        </div>
-
-        <div
-          class="pt-8 border-t border-slate-800/80 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500 gap-4"
-        >
-          <div>
-            Copyright © 2026 Tim DEBUGGERS - UIN Sultan Maulana Hasanuddin Banten.
-          </div>
-          <div class="flex items-center gap-4 text-slate-400">
-            <span class="hover:text-emerald-400 transition-colors">IoT System v2.4</span>
-            <span>•</span>
-            <span class="hover:text-emerald-400 transition-colors">Clean Bio-Energy</span>
-          </div>
-        </div>
-      </div>
-    </footer>
-
-    <!-- Embedded Custom Motion JavaScript -->
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        // 1. Inisialisasi Icon Lucide
-        if (typeof lucide !== "undefined") {
-          lucide.createIcons();
-        }
-
-        // 2. Smooth Scroll
-        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-          anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            const targetId = this.getAttribute("href");
-            if (targetId === "#") return;
-
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-              const headerOffset = 80;
-              const elementPosition = targetElement.getBoundingClientRect().top;
-              const offsetPosition =
-                elementPosition + window.pageYOffset - headerOffset;
-
-              window.scrollTo({
-                top: offsetPosition,
-                behavior: "smooth",
-              });
-            }
-          });
-        });
-
-        // 3. Modal Poster Control
-        const posterModal = document.getElementById("posterModal");
-        const openPosterBtn = document.getElementById("openPosterBtn");
-        const closePosterBtn = document.getElementById("closePosterBtn");
-
-        function openModal() {
-          posterModal.classList.remove("hidden-modal");
-          posterModal.classList.add("active-modal");
-          document.body.style.overflow = "hidden";
-        }
-
-        function closeModal() {
-          posterModal.classList.remove("active-modal");
-          posterModal.classList.add("hidden-modal");
-          document.body.style.overflow = "";
-        }
-
-        if (openPosterBtn && posterModal) {
-          openPosterBtn.addEventListener("click", openModal);
-        }
-
-        if (closePosterBtn && posterModal) {
-          closePosterBtn.addEventListener("click", closeModal);
-        }
-
-        if (posterModal) {
-          posterModal.addEventListener("click", (e) => {
-            if (e.target === posterModal) {
-              closeModal();
-            }
-          });
-
-          document.addEventListener("keydown", (e) => {
-            if (e.key === "Escape" && posterModal.classList.contains("active-modal")) {
-              closeModal();
-            }
-          });
-        }
-
-        // 4. Scroll Reveal Intersection Observer (AOS Animation Effect)
-        const revealElements = document.querySelectorAll(".reveal, .reveal-left, .reveal-right");
-        
-        const revealObserver = new IntersectionObserver(
-          (entries, observer) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                entry.target.classList.add("active");
-              }
-            });
-          },
-          { threshold: 0.12 }
-        );
-
-        revealElements.forEach((el) => revealObserver.observe(el));
-
-        // 5. Dynamic Counter Motion Animation
-        const counters = document.querySelectorAll('.counter');
-        let counterAnimated = false;
-
-        const animateCounters = () => {
-          counters.forEach((counter) => {
-            const target = +counter.getAttribute('data-target');
-            const speed = 40;
-            const updateCount = () => {
-              const count = +counter.innerText;
-              const inc = Math.max(1, Math.ceil(target / speed));
-
-              if (count < target) {
-                counter.innerText = Math.min(target, count + inc);
-                setTimeout(updateCount, 30);
-              } else {
-                counter.innerText = target;
-              }
-            };
-            updateCount();
-          });
-        };
-
-        const counterSection = document.querySelector('.counter');
-        if (counterSection) {
-          const counterObserver = new IntersectionObserver((entries) => {
-            if (entries[0].isIntersecting && !counterAnimated) {
-              counterAnimated = true;
-              animateCounters();
-            }
-          }, { threshold: 0.5 });
-          counterObserver.observe(counterSection);
-        }
-
-        // 6. Hero Animated Background Bubble Effects
-        const heroBubblesContainer = document.getElementById("heroBubbles");
-        if (heroBubblesContainer) {
-          for (let i = 0; i < 15; i++) {
-            const bubble = document.createElement("div");
-            bubble.classList.add("bio-bubble");
-            const size = Math.random() * 20 + 8;
-            bubble.style.width = `${size}px`;
-            bubble.style.height = `${size}px`;
-            bubble.style.left = `${Math.random() * 100}%`;
-            bubble.style.bottom = `-20px`;
-            bubble.style.animationDuration = `${Math.random() * 4 + 4}s`;
-            bubble.style.animationDelay = `${Math.random() * 3}s`;
-            heroBubblesContainer.appendChild(bubble);
-          }
-        }
-      });
-    </script>
-  </body>
+<html lang="id">
+ <head>
+ <meta charset="UTF-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+ <title>BIOMA'HAD SMART - Pengolahan Limbah & Bioenergi IoT</title>
+ 
+<!-- Google Font: Plus Jakarta Sans -->
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+ <!-- Tailwind CSS CDN -->
+ <script src="https://cdn.tailwindcss.com"></script>
+ <script>
+ // Konfigurasi Warna Tailwind CDN via JS
+ tailwind.config = {
+ theme: {
+ extend: {
+ colors: {
+ emerald: {
+ 50: "#f0fdf4",
+ 100: "#dcfce7",
+ 200: "#bbf7d0",
+ 600: "#059669",
+ 700: "#047857",
+ 800: "#065f46",
+ 900: "#064e3b",
+ 950: "#022c22",
+ },
+ },
+ },
+ },
+ };
+ </script>
+
+ <!-- Lucide Icons CDN -->
+ <script src="https://unpkg.com/lucide@latest"></script>
+
+ <!-- Embedded Custom CSS -->
+ <style>
+ html {
+ scroll-behavior: smooth;
+ }
+
+ body {
+ font-family: "Plus Jakarta Sans", sans-serif;
+ }
+
+ /* Hero Section Background Fallback & Styling */
+ .hero-bg-overlay {
+ background-image: url("assets/Hero.webp");
+ background-size: cover;
+ background-position: 65% center;
+ background-repeat: no-repeat;
+ }
+
+ /* Custom Scrollbar */
+ ::-webkit-scrollbar {
+ width: 8px;
+ }
+
+ ::-webkit-scrollbar-track {
+ background: #022c22;
+ }
+
+ ::-webkit-scrollbar-thumb {
+ background: #059669;
+ border-radius: 4px;
+ }
+
+ ::-webkit-scrollbar-thumb:hover {
+ background: #10b981;
+ }
+
+ /* ANIMASI FUTURISTIK MEWAH */
+ @keyframes glowPulse {
+ 0%, 100% {
+ box-shadow: 0 0 20px rgba(16, 185, 129, 0.35), 0 0 40px rgba(16, 185, 129, 0.15);
+ }
+ 50% {
+ box-shadow: 0 0 30px rgba(16, 185, 129, 0.65), 0 0 60px rgba(16, 185, 129, 0.3);
+ }
+ }
+
+ @keyframes shimmer {
+ 0% { transform: translateX(-150%) rotate(25deg); }
+ 100% { transform: translateX(150%) rotate(25deg); }
+ }
+
+ @keyframes floatSlow {
+ 0%, 100% { transform: translateY(0px) rotate(0deg); }
+ 50% { transform: translateY(-8px) rotate(0.5deg); }
+ }
+
+ .btn-glow {
+ animation: glowPulse 3s infinite ease-in-out;
+ }
+
+ .hero-title-gradient {
+ background: linear-gradient(135deg, #ffffff 0%, #a7f3d0 60%, #34d399 100%);
+ -webkit-background-clip: text;
+ -webkit-text-fill-color: transparent;
+ }
+
+ .shimmer-effect {
+ position: relative;
+ overflow: hidden;
+ }
+
+ .shimmer-effect::after {
+ content: '';
+ position: absolute;
+ top: -50%;
+ left: -50%;
+ width: 200%;
+ height: 200%;
+ background: linear-gradient(
+ 60deg,
+ transparent 30%,
+ rgba(255, 255, 255, 0.25) 50%,
+ transparent 70%
+ );
+ transform: rotate(25deg);
+ animation: shimmer 4s infinite linear;
+ }
+
+ /* Modal Animation */
+ .modal-backdrop {
+ transition: opacity 0.3s ease, visibility 0.3s ease;
+ }
+ .modal-backdrop.hidden-modal {
+ opacity: 0;
+ pointer-events: none;
+ visibility: hidden;
+ }
+ .modal-backdrop.active-modal {
+ opacity: 1;
+ pointer-events: auto;
+ visibility: visible;
+ }
+ .modal-content {
+ transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+ }
+ .modal-backdrop.hidden-modal .modal-content {
+ transform: scale(0.9) translateY(20px);
+ opacity: 0;
+ }
+ .modal-backdrop.active-modal .modal-content {
+ transform: scale(1) translateY(0);
+ opacity: 1;
+ }
+ </style>
+ </head>
+ <body class="bg-white text-slate-800 antialiased">
+ <!-- TOP MINI BAR -->
+ <div
+ class="bg-emerald-900 text-white text-xs py-2 px-4 sm:px-8 flex justify-between items-center border-b border-emerald-800"
+ >
+ <div class="flex items-center gap-6">
+ <span class="hidden sm:flex items-center gap-1.5">
+ <i data-lucide="graduation-cap" class="w-3.5 h-3.5 text-emerald-400"></i>
+ UIN Sultan Maulana Hasanuddin Banten
+ </span>
+ </div>
+ <div class="font-semibold text-emerald-300">OASE PTKIN III 2026</div>
+ </div>
+
+ <!-- MAIN HEADER / NAVBAR -->
+ <header
+ class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-sm"
+ >
+ <div
+ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between"
+ >
+ <!-- BRAND LOGO -->
+ <div class="flex items-center gap-3">
+ <img
+ src="assets/Logo.png"
+ alt="Logo BIOMA'HAD SMART"
+ class="h-12 w-auto object-contain"
+ onerror="this.onerror=null; this.src='https://placehold.co/200x80/022c22/ffffff?text=BIOMA%27HAD';"
+ />
+ <div>
+ <span
+ class="text-xl font-extrabold text-emerald-950 tracking-tight block leading-none"
+ >
+ BIOMA'HAD SMART
+ </span>
+ <span
+ class="text-[10px] font-bold text-emerald-600 uppercase tracking-widest"
+ >
+ IoT Biodigester System
+ </span>
+ </div>
+ </div>
+
+ <!-- NAVIGASI -->
+ <nav
+ class="hidden md:flex items-center gap-8 font-semibold text-sm text-slate-600"
+ >
+ <a href="#tentang" class="hover:text-emerald-600 transition-colors"
+ >Tentang BIOMA'HAD</a
+ >
+ <a
+ href="#spesifikasi"
+ class="hover:text-emerald-600 transition-colors"
+ >Spesifikasi Teknologi</a
+ >
+ <a href="#sistem" class="hover:text-emerald-600 transition-colors"
+ >Fitur IoT</a
+ >
+ <a href="#cara-kerja" class="hover:text-emerald-600 transition-colors"
+ >Cara Kerja</a
+ >
+ <a href="#kontak" class="hover:text-emerald-600 transition-colors"
+ >Tim DEBUGGERS</a
+ >
+ </nav>
+ </div>
+ </header>
+
+ <!-- HERO BANNER -->
+ <section
+ class="relative flex min-h-[580px] md:min-h-[640px] lg:min-h-[700px] items-center bg-emerald-950 text-white py-16 md:py-20 overflow-hidden"
+ >
+ <!-- Gambar Background -->
+ <div class="hero-bg-overlay absolute inset-0"></div>
+
+ <!-- Futuristic Tech Grid & Glow Overlay -->
+ <div
+ class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-500/20 via-emerald-950/80 to-emerald-950/95"
+ ></div>
+
+ <!-- Konten Teks Hero -->
+ <div
+ class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6"
+ >
+ <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-400/30 backdrop-blur-md text-emerald-300 text-xs font-semibold">
+ <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+ <span>Inovasi Terbarukan OASE PTKIN III</span>
+ </div>
+
+ <h1
+ class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight max-w-3xl hero-title-gradient"
+ >
+ Menjadikan Sampah Organik Menjadi Solusi Energi
+ </h1>
+ <p class="text-slate-300 text-sm sm:text-base max-w-xl leading-relaxed">
+ Pengembangan Prototipe Biodigester Berbasis IoT untuk Mendukung
+ Kemandirian Energi Ma'had Melalui Circular Economy.
+ </p>
+
+ <!-- TOMBOL AKSI FUTURISTIK (KTI & POSTER) -->
+ <div class="pt-4 flex flex-wrap items-center gap-4">
+ <!-- Tombol Lihat KTI -->
+ <a
+ href="https://drive.google.com/file/d/1T8-Ns0aqpgeWkZC188qwQtcLeGUdEf7l/view?usp=drivesdk"
+ target="_blank"
+ rel="noopener noreferrer"
+ class="shimmer-effect btn-glow inline-flex items-center gap-2.5 px-6 py-3.5 bg-emerald-500 hover:bg-emerald-400 text-emerald-950 font-extrabold text-xs uppercase tracking-wider rounded-xl transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 shadow-lg shadow-emerald-500/30"
+ >
+ <i data-lucide="file-text" class="w-4 h-4 text-emerald-950"></i>
+ <span>Lihat KTI</span>
+ <i data-lucide="external-link" class="w-3.5 h-3.5 opacity-70"></i>
+ </a>
+
+ <!-- Tombol Lihat Poster -->
+ <button
+ type="button"
+ id="openPosterBtn"
+ class="inline-flex items-center gap-2.5 px-6 py-3.5 bg-white/10 hover:bg-white/20 text-white font-extrabold text-xs uppercase tracking-wider rounded-xl border border-white/20 backdrop-blur-md transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 hover:border-emerald-400/50 hover:text-emerald-300 shadow-md"
+ >
+ <i data-lucide="image" class="w-4 h-4 text-emerald-400"></i>
+ <span>Lihat Poster</span>
+ </button>
+ </div>
+ </div>
+ </section>
+
+ <!-- MODAL POSTER INTERAKTIF -->
+ <div
+ id="posterModal"
+ class="modal-backdrop hidden-modal fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-md"
+ role="dialog"
+ aria-modal="true"
+ >
+ <div
+ class="modal-content relative w-full max-w-4xl bg-slate-900 rounded-3xl border border-emerald-500/30 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
+ >
+ <!-- Modal Header -->
+ <div class="px-6 py-4 border-b border-slate-800 flex items-center justify-between bg-slate-900/90">
+ <div class="flex items-center gap-2.5">
+ <div class="p-2 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+ <i data-lucide="sparkles" class="w-4 h-4"></i>
+ </div>
+ <div>
+ <h3 class="text-sm font-bold text-white leading-none">Poster Resmi BIOMA'HAD SMART</h3>
+ <p class="text-[11px] text-slate-400 mt-1">Tim DEBUGGERS - UIN SMH Banten</p>
+ </div>
+ </div>
+
+ <div class="flex items-center gap-2">
+ <a
+ href="assets/poster.jpg"
+ download
+ class="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+ title="Unduh Poster"
+ >
+ <i data-lucide="download" class="w-4 h-4"></i>
+ </a>
+ <button
+ type="button"
+ id="closePosterBtn"
+ class="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+ aria-label="Tutup"
+ >
+ <i data-lucide="x" class="w-5 h-5"></i>
+ </button>
+ </div>
+ </div>
+
+ <!-- Modal Body (Gambar Poster) -->
+ <div class="p-4 sm:p-6 overflow-y-auto flex items-center justify-center bg-slate-950/50">
+ <img
+ src="assets/poster.jpg"
+ alt="Poster BIOMA'HAD SMART"
+ class="max-w-full max-h-[70vh] rounded-xl object-contain shadow-2xl border border-slate-800"
+ onerror="this.onerror=null; this.src='https://placehold.co/800x1130/022c22/ffffff?text=Poster+BIOMA%27HAD+SMART';"
+ />
+ </div>
+ </div>
+ </div>
+
+ <!-- SOLUSI PENGELOLAAN LIMBAH -->
+ <section
+ id="tentang"
+ class="py-16 md:py-24 bg-white border-b border-slate-100"
+ >
+ <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+ <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+ <div class="lg:col-span-6">
+ <div
+ class="rounded-3xl bg-slate-50 p-4 border border-slate-200 shadow-lg"
+ >
+ <img
+ src="assets/prototipe.jpeg"
+ alt="Anatomi Reaktor BIOMA'HAD SMART"
+ class="w-full h-auto rounded-2xl object-contain"
+ onerror="this.onerror=null; this.src='https://placehold.co/600x400/022c22/ffffff?text=Prototipe+BIOMA%27HAD';"
+ />
+ </div>
+ </div>
+
+ <div class="lg:col-span-6 space-y-6">
+ <h2
+ class="text-2xl sm:text-3xl font-extrabold text-emerald-950 leading-tight"
+ >
+ Solusi Pengelolaan Limbah Organik dengan BIOMA'HAD SMART
+ </h2>
+ <p class="text-slate-600 text-sm sm:text-base leading-relaxed">
+ BIOMA'HAD SMART adalah sistem pengolahan limbah organik
+ terintegrasi yang mengubah sampah dapur basah dan sisa makanan
+ Ma'had menjadi sumber energi terbarukan berupa biogas terukur,
+ sekaligus menghasilkan pupuk hayati cair yang ramah lingkungan.
+ </p>
+ <p class="text-slate-600 text-sm leading-relaxed">
+ Dilengkapi sistem monitoring berbasis Internet of Things (IoT)
+ untuk mengamati kondisi fermentasi anaerobik secara berkelanjutan
+ guna mencegah terjadinya akumulasi asam berlebih (<em
+ >sour digester</em
+ >).
+ </p>
+ <div>
+ <a
+ href="#cara-kerja"
+ class="inline-flex items-center gap-2 px-6 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md shadow-emerald-600/20"
+ >
+ Lihat Cara Kerja
+ <i data-lucide="arrow-right" class="w-4 h-4"></i>
+ </a>
+ </div>
+ </div>
+ </div>
+ </div>
+ </section>
+
+ <!-- SPESIFIKASI TEKNOLOGI -->
+ <section
+ id="spesifikasi"
+ class="py-16 md:py-24 bg-emerald-50/50 border-b border-slate-100"
+ >
+ <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+ <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+ <div class="lg:col-span-6 space-y-6">
+ <h2 class="text-2xl sm:text-3xl font-extrabold text-emerald-950">
+ Spesifikasi Teknologi
+ </h2>
+
+ <ul class="space-y-4">
+ <li class="flex items-start gap-3">
+ <div
+ class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0 mt-0.5"
+ >
+ <i data-lucide="check" class="w-4 h-4"></i>
+ </div>
+ <span class="text-xs sm:text-sm text-slate-700 font-medium"
+ ><strong>Reaktor Utama:</strong> Ember fermentasi anaerobik
+ kapasitas nominal 18 Liter kedap udara.</span
+ >
+ </li>
+ <li class="flex items-start gap-3">
+ <div
+ class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0 mt-0.5"
+ >
+ <i data-lucide="check" class="w-4 h-4"></i>
+ </div>
+ <span class="text-xs sm:text-sm text-slate-700 font-medium"
+ ><strong>Sistem Pemrosesan IoT:</strong> Mikrokontroler ESP32
+ terintegrasi modul Wi-Fi telemetri.</span
+ >
+ </li>
+ <li class="flex items-start gap-3">
+ <div
+ class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0 mt-0.5"
+ >
+ <i data-lucide="check" class="w-4 h-4"></i>
+ </div>
+ <span class="text-xs sm:text-sm text-slate-700 font-medium"
+ ><strong>Multi-Sensor Precision:</strong> Sensor pH
+ (PH-4502C), Suhu (DS18B20), Metana (MQ-4 CH4), dan Pressure
+ Transducer.</span
+ >
+ </li>
+ <li class="flex items-start gap-3">
+ <div
+ class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0 mt-0.5"
+ >
+ <i data-lucide="check" class="w-4 h-4"></i>
+ </div>
+ <span class="text-xs sm:text-sm text-slate-700 font-medium"
+ ><strong>Sistem Filtrasi Ganda:</strong> Tabung Silika Gel
+ (penyerap kelembapan) & Karbon Aktif (adsorpsi bau/H2S).</span
+ >
+ </li>
+ <li class="flex items-start gap-3">
+ <div
+ class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0 mt-0.5"
+ >
+ <i data-lucide="check" class="w-4 h-4"></i>
+ </div>
+ <span class="text-xs sm:text-sm text-slate-700 font-medium"
+ ><strong>Estimasi Biogas:</strong> ~0.14 m³ biogas per 3 kg
+ akumulasi sampah organik Ma'had.</span
+ >
+ </li>
+ </ul>
+ </div>
+
+ <div class="lg:col-span-6">
+ <div
+ class="rounded-3xl bg-white p-4 border border-slate-200 shadow-md"
+ >
+ <img
+ src="assets/rangkaian.jpeg"
+ alt="Skematik Rangkaian IoT ESP32"
+ class="w-full h-auto rounded-2xl object-contain"
+ onerror="this.onerror=null; this.src='https://placehold.co/600x400/022c22/ffffff?text=Rangkaian+ESP32';"
+ />
+ <p class="text-center text-xs text-slate-500 mt-3 font-semibold">
+ Diagram Skematik Rangkaian Elektronik BIOMA'HAD SMART
+ </p>
+ </div>
+ </div>
+ </div>
+ </div>
+ </section>
+
+ <!-- SISTEM BIOMA'HAD SMART -->
+ <section
+ id="sistem"
+ class="py-16 md:py-24 bg-white border-b border-slate-100"
+ >
+ <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
+ <div class="max-w-2xl mx-auto space-y-3">
+ <h2 class="text-2xl sm:text-3xl font-extrabold text-emerald-950">
+ Sistem BIOMA'HAD SMART & IoT Telemetry
+ </h2>
+ <p class="text-slate-600 text-sm">
+ Pemantauan parameter fisik-kimia reaktor secara konsisten melalui
+ integrasi antarmuka digital.
+ </p>
+ </div>
+
+ <div
+ class="max-w-3xl mx-auto bg-slate-50 p-4 rounded-3xl border border-slate-200 shadow-lg"
+ >
+ <img
+ src="assets/prototipe.jpeg"
+ alt="Prototipe BIOMA'HAD SMART Utuh"
+ class="w-full h-auto rounded-2xl object-cover"
+ onerror="this.onerror=null; this.src='https://placehold.co/800x450/022c22/ffffff?text=Sistem+BIOMA%27HAD+SMART';"
+ />
+ </div>
+
+ <p class="text-slate-600 text-sm max-w-3xl mx-auto leading-relaxed">
+ BIOMA'HAD SMART menyediakan solusi lengkap dan efisien untuk mengelola
+ limbah serta menghasilkan energi terbarukan. Dengan memantau parameter
+ suhu, pH, konsentrasi gas metana, dan tekanan secara digital, risiko
+ kegagalan biodigester dapat diantisipasi secara tepat.
+ </p>
+ </div>
+ </section>
+
+ <!-- CARA KERJA BIOMA'HAD SMART -->
+ <section
+ id="cara-kerja"
+ class="py-16 md:py-24 bg-emerald-50/50 border-b border-slate-100"
+ >
+ <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+ <h2
+ class="text-2xl sm:text-3xl font-extrabold text-emerald-950 text-center"
+ >
+ Cara Kerja BIOMA'HAD SMART
+ </h2>
+
+ <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+ <div
+ class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm text-center space-y-4"
+ >
+ <div
+ class="w-12 h-12 rounded-full bg-emerald-600 text-white font-extrabold text-lg flex items-center justify-center mx-auto shadow-md shadow-emerald-600/30"
+ >
+ 1
+ </div>
+ <h3 class="font-bold text-base text-emerald-950">
+ Kumpulkan Sampah Digester
+ </h3>
+ <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
+ Masukkan sampah organik sisa makanan Ma'had yang telah dipilah dan
+ dicampur air dengan rasio 1:1 ke dalam reaktor.
+ </p>
+ </div>
+
+ <div
+ class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm text-center space-y-4"
+ >
+ <div
+ class="w-12 h-12 rounded-full bg-emerald-600 text-white font-extrabold text-lg flex items-center justify-center mx-auto shadow-md shadow-emerald-600/30"
+ >
+ 2
+ </div>
+ <h3 class="font-bold text-base text-emerald-950">
+ Pemantauan IoT Real-Time
+ </h3>
+ <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
+ Jaringan sensor mengirimkan data suhu, pH, dan konsentrasi metana
+ secara otomatis via ESP32 untuk memantau proses anaerobik.
+ </p>
+ </div>
+
+ <div
+ class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm text-center space-y-4"
+ >
+ <div
+ class="w-12 h-12 rounded-full bg-emerald-600 text-white font-extrabold text-lg flex items-center justify-center mx-auto shadow-md shadow-emerald-600/30"
+ >
+ 3
+ </div>
+ <h3 class="font-bold text-base text-emerald-950">
+ Panen Biogas & Bio-Slurry
+ </h3>
+ <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
+ Biogas murni siap dimanfaatkan untuk kompor, sedangkan ampas
+ olahan dapat dimanfaatkan sebagai pupuk tanaman hayati.
+ </p>
+ </div>
+ </div>
+ </div>
+ </section>
+
+ <!-- PENGELOLAAN LIMBAH EFISIEN BANNER -->
+ <section class="py-16 bg-white border-b border-slate-100">
+ <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+ <div
+ class="bg-emerald-100/60 p-8 sm:p-12 rounded-3xl border border-emerald-200 space-y-4"
+ >
+ <h2 class="text-2xl sm:text-3xl font-extrabold text-emerald-950">
+ Pengelolaan Limbah Secara Efisien dan Ramah Lingkungan
+ </h2>
+ <p
+ class="text-slate-700 text-sm sm:text-base max-w-2xl leading-relaxed"
+ >
+ Solusi inovatif yang mengubah limbah organik menjadi energi bersih
+ untuk kebutuhan energi Ma'had serta mendukung terciptanya konsep
+ Kampus Hijau.
+ </p>
+ <div
+ class="pt-2 flex flex-wrap gap-4 text-xs font-bold text-emerald-900"
+ >
+ <span class="flex items-center gap-1.5">
+ <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i>
+ Monitoring IoT 24/7
+ </span>
+ <span class="flex items-center gap-1.5">
+ <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i>
+ Bebas Risiko Sour Digester
+ </span>
+ <span class="flex items-center gap-1.5">
+ <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i>
+ Inovasi Tim DEBUGGERS
+ </span>
+ </div>
+ </div>
+ </div>
+ </section>
+
+ <!-- FOOTER -->
+ <footer
+ id="kontak"
+ class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800"
+ >
+ <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+ <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+ <div class="space-y-3">
+ <h3 class="text-white font-extrabold text-base">BIOMA'HAD SMART</h3>
+ <p class="text-xs leading-relaxed">
+ Sistem biodigester berbasis IoT untuk mendukung kemandirian energi
+ Ma'had melalui circular economy.
+ </p>
+ </div>
+ <div>
+ <h4
+ class="text-white font-bold text-xs uppercase tracking-wider mb-3"
+ >
+ Navigasi
+ </h4>
+ <ul class="space-y-2 text-xs">
+ <li>
+ <a href="#tentang" class="hover:text-emerald-400"
+ >Tentang BIOMA'HAD</a
+ >
+ </li>
+ <li>
+ <a href="#spesifikasi" class="hover:text-emerald-400"
+ >Spesifikasi Teknologi</a
+ >
+ </li>
+ <li>
+ <a href="#cara-kerja" class="hover:text-emerald-400"
+ >Cara Kerja</a
+ >
+ </li>
+ </ul>
+ </div>
+ <div>
+ <h4
+ class="text-white font-bold text-xs uppercase tracking-wider mb-3"
+ >
+ Tim DEBUGGERS
+ </h4>
+ <p class="text-xs">
+ <strong>Dosen Pembimbing:</strong> M. Iman Wahyudi, M.Kom.
+ </p>
+ <p class="text-xs mt-1">
+ <strong>Anggota:</strong> M. Ghathaan Faturrahman
+ </p>
+ <p class="text-xs">Ahmad Rosyid, Raudhotus Sifa, Ira Rahmawati</p>
+ </div>
+ <div>
+ <h4
+ class="text-white font-bold text-xs uppercase tracking-wider mb-3"
+ >
+ Instansi
+ </h4>
+ <p class="text-xs">Fakultas Sains dan Teknologi</p>
+ <p class="text-xs">UIN Sultan Maulana Hasanuddin Banten</p>
+ <p class="text-xs text-emerald-400 font-semibold mt-2">
+ OASE PTKIN III 2026
+ </p>
+ </div>
+ </div>
+ <div
+ class="pt-8 border-t border-slate-800 text-center text-xs text-slate-500"
+ >
+ Copyright © 2026 Tim DEBUGGERS - UIN Sultan Maulana Hasanuddin Banten.
+ All Rights Reserved.
+ </div>
+ </div>
+ </footer>
+
+ <!-- Embedded Custom JavaScript -->
+ <script>
+ document.addEventListener("DOMContentLoaded", () => {
+ // 1. Inisialisasi Icon Lucide
+ if (typeof lucide !== "undefined") {
+ lucide.createIcons();
+ }
+
+ // 2. Smooth Scroll dengan Offset untuk Header Sticky
+ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+ anchor.addEventListener("click", function (e) {
+ e.preventDefault();
+ const targetId = this.getAttribute("href");
+ if (targetId === "#") return;
+
+ const targetElement = document.querySelector(targetId);
+ if (targetElement) {
+ const headerOffset = 80;
+ const elementPosition = targetElement.getBoundingClientRect().top;
+ const offsetPosition =
+ elementPosition + window.pageYOffset - headerOffset;
+
+ window.scrollTo({
+ top: offsetPosition,
+ behavior: "smooth",
+ });
+ }
+ });
+ });
+
+ // 3. Modal Poster Control
+ const posterModal = document.getElementById("posterModal");
+ const openPosterBtn = document.getElementById("openPosterBtn");
+ const closePosterBtn = document.getElementById("closePosterBtn");
+
+ function openModal() {
+ posterModal.classList.remove("hidden-modal");
+ posterModal.classList.add("active-modal");
+ document.body.style.overflow = "hidden";
+ }
+
+ function closeModal() {
+ posterModal.classList.remove("active-modal");
+ posterModal.classList.add("hidden-modal");
+ document.body.style.overflow = "";
+ }
+
+ if (openPosterBtn && posterModal) {
+ openPosterBtn.addEventListener("click", openModal);
+ }
+
+ if (closePosterBtn && posterModal) {
+ closePosterBtn.addEventListener("click", closeModal);
+ }
+
+ // Close on backdrop click
+ if (posterModal) {
+ posterModal.addEventListener("click", (e) => {
+ if (e.target === posterModal) {
+ closeModal();
+ }
+ });
+
+ // Close on Escape key press
+ document.addEventListener("keydown", (e) => {
+ if (e.key === "Escape" && posterModal.classList.contains("active-modal")) {
+ closeModal();
+ }
+ });
+ }
+ });
+ </script>
+ </body>
 </html>
